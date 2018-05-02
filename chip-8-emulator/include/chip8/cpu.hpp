@@ -16,8 +16,7 @@ class cpu
 		unsigned short I;				// Index register
 		unsigned short PC;			// Program counter 0x000 -> 0xFFF
 
-
-		unsigned char memory[4096];
+		memory mem = memory();
 
 };
 

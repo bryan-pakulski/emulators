@@ -34,7 +34,7 @@ TERMARGS := -c
 # Program name
 EXECUTABLE := main
 # Program arguments
-EXECUTABLE_ARGUMENTS := mglist.txt
+EXECUTABLE_ARGUMENTS := bin/roms/INVADERS
 
 # Source files
 SOURCES := $(shell find $(SRC) -type f -name "*.cpp") $(shell find $(INCF) -type f -name "*.cpp") $(shell find $(SRC) -type f -name "*.c") $(shell find $(INCF) -type f -name "*.c")

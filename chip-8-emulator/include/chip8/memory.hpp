@@ -1,5 +1,5 @@
-#ifndef __MEMORY _HPP__
-#define __MEMORY _HPP__
+#ifndef __MEMORY_HPP__
+#define __MEMORY_HPP__
 
 /*
  *	Memory map

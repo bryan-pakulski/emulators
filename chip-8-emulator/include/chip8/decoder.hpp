@@ -1,7 +1,20 @@
+// handles loading games and parsing instructions
+// to send into memory for the cpu
+
 #ifndef __DECODER_HPP__
 #define __DECODER_HPP__
 
-// Decodes a memory instruction and sends it into memory for the cpu
+#include <iostream>
+#include <string>
 
+class decoder
+{
+	public:
+		decoder(std::string);
+		~decoder();
+
+	private:
+		std::string path;
+};
 
 #endif
