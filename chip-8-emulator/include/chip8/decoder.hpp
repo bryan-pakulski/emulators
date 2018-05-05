@@ -7,14 +7,15 @@
 #include <iostream>
 #include <string>
 #include <fstream>
+#include <vector>
+#include <bitset>
 
 #define MAX_GAMESIZE 1024
-#define NON_DATAFLAG 0xFF // Flag for non game data in memory
 
 class decoder
 {
 	public:
-		decoder(std::string game_path);
+		explicit decoder( std::string game_path );
 		~decoder();
 
 		// Loads a game via internal path
@@ -22,7 +23,7 @@ class decoder
 
 	private:
 		std::string path;
-		unsigned char game_data[MAX_GAMESIZE];
+		std::vector<char> game_buffer;
 };
 
 #endif
