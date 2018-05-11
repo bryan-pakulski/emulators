@@ -1,7 +1,6 @@
 MODE := C++
 # Compiler to be used
 CC := g++
-
 # Library files
 LIB := lib
 # main include folder
@@ -73,6 +72,7 @@ $(EXECUTABLE): $(OBJECTS)
 
 	# Run file if run is set to true
 	if [ "$(RUN)" = "ON" ]; then \
+		export DISPLAY=:0;\
 		$(TERM) $(TERMARGS) "./$(BIN)/$(EXECUTABLE) $(EXECUTABLE_ARGUMENTS)"; \
 	fi
 
