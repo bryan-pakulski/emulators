@@ -9,7 +9,7 @@ display::display()
 
 display::~display()
 {
-
+	SDL_Quit();
 }
 
 /**

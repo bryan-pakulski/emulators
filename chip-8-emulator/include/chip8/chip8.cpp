@@ -38,6 +38,7 @@ void chip8::gameloop()
 
 		// update non event opcodes
 
-		// Draw loop
+		// Update display when cpu draw flag is raised
+		screen->doUpdate();
 	}
 }
