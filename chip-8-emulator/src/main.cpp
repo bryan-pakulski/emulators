@@ -1,6 +1,5 @@
 #include <iostream>
 #include "chip8.hpp"
-#include "decoder.hpp"
 
 using namespace std;
 
@@ -28,7 +27,8 @@ int main(int argc, char* argv[])
 	if (argc != 2)
 		return usage(argv);
 	
-	decoder loader = decoder(argv[1]);
+	// Load game and check if loaded correctly
+	chip8 emulator = chip8(argv[1]);
 
 	return 0;
 }

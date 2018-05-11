@@ -2,7 +2,7 @@
 
 using namespace std;
 
-decoder::decoder(string game_path) : path(game_path)
+decoder::decoder(char* game_path) : path(game_path)
 {
 	cout << "Loading game from... " << path << endl;
 
@@ -26,6 +26,18 @@ void decoder::loadGame()
 		(istreambuf_iterator<char>(game)),
 		(istreambuf_iterator<char>())
 	);
+
+	if (game_buffer.size() > MAX_GAMESIZE)
+	{
+		cerr << "Error; maximum game size exceeded" <<
+		"Current limit is: " << MAX_GAMESIZE << " bytes" << endl;
+		loaded = false;
+	}
+	else
+	{
+		cerr << "Game loaded successfully into memory..." << endl;
+		loaded = true;
+	}
 
 	game.close();
 }

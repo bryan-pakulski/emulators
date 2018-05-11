@@ -7,9 +7,9 @@ LIB := lib
 # main include folder
 INCF := include
 # Include 
-INC := -Iinclude -Iinclude/chip8
+INC := -Iinclude -Iinclude/chip8 -Iinclude/SDL2
 # Libraries to include
-LDFLAGS := 
+LDFLAGS := -lSDL2
 
 # Cflags to be used
 CFLAGS := -std=c++11 -Wall -g $(INC) -I$(LIB) 

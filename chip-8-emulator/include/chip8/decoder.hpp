@@ -10,16 +10,18 @@
 #include <vector>
 #include <bitset>
 
-#define MAX_GAMESIZE 1024
+#define MAX_GAMESIZE 8192 // Max 8kb games
 
 class decoder
 {
 	public:
-		explicit decoder( std::string game_path );
+		explicit decoder( char* game_path );
 		~decoder();
 
 		// Loads a game via internal path
 		void loadGame();
+
+		bool loaded;
 
 	private:
 		std::string path;
