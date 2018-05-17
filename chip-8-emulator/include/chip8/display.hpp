@@ -21,8 +21,9 @@ class display
 		bool init_flag;
 
 	private:
-		SDL_Window* window;
+		SDL_Window* gWindow;
 		SDL_Surface* screenSurface;
+		SDL_Renderer* gRenderer;
 };
 
 

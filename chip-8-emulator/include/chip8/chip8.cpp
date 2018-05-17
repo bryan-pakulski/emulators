@@ -17,7 +17,7 @@ chip8::chip8( char* path )
 	if (running)
 		gameloop();
 	else
-		cout << "Emulator could not be initialised" << endl;
+		cerr << "Emulator could not be initialised" << endl;
 }
 
 chip8::~chip8()
@@ -38,6 +38,7 @@ void chip8::gameloop()
 
 		// update non event opcodes
 
+		// TODO:
 		// Update display when cpu draw flag is raised
 		screen->doUpdate();
 	}
