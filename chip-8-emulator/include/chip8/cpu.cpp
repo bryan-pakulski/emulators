@@ -34,5 +34,5 @@ void cpu::cycle()
 	op = fetchNextOpcode();
 
 	// Decode opcode (returns an index for the opcode lookup table)
-
+	
 }
