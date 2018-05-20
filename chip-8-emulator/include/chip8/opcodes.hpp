@@ -18,7 +18,7 @@ public:
 	~opcode();
 
 private:
-	// Opcodes class need access to memory and other values that the cpu uses
+	// Opcode functions need access to memory and other values that the cpu uses
 	// This is done via this class pointer
 	cpu *proc;
 
