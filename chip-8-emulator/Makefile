@@ -99,7 +99,7 @@ clean:
 	rm -rf $(BIN)/$(EXECUTABLE)
 	rm -rf $(OBJ)/*.o
 	rm -rf $(SRC)/*.o
-	rm -rf $(DOC)/*
+	#rm -rf $(DOC)/*
 	rm -rf $(TST)/*.o
 	find $(INCF) -type f -name "*.o" -exec rm -rf {} \;
 	rm -rf $(TST)/$(EXECUTABLE)_test

@@ -20,7 +20,7 @@ class decoder
 
 		// Loads a game via internal path
 		void loadGame();
-
+		
 		bool loaded;
 
 	private:

@@ -14,8 +14,12 @@ class memory
 		memory();
 		~memory();
 
+		// Gets instruction at index
+		unsigned char get(int);
+
 	private:
 		unsigned char mem[4096];
+
 };
 
 #endif

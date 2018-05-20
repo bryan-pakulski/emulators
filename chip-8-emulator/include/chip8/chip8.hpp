@@ -20,6 +20,7 @@ class chip8
 	private:
 		decoder *loader;
 		display *screen;
+		cpu *cp;
 		bool running;
 		
 		SDL_Event e;

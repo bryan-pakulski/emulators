@@ -11,6 +11,7 @@ chip8::chip8( char* path )
 {
 	loader = new decoder( path );
 	screen = new display();
+	cp     = new cpu();
 
 	running = screen->initialiseDisplay();
 
@@ -37,6 +38,7 @@ void chip8::gameloop()
 		}
 
 		// update non event opcodes
+		cp->cycle();
 
 		// TODO:
 		// Update display when cpu draw flag is raised
