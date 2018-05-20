@@ -22,7 +22,28 @@ private:
 	// This is done via this class pointer
 	cpu *proc;
 
-	std::map< int , void* > oplist;
+	std::map< int , void* > oplist = {
+		{ 0, (void*) &op0NNN }, { 0, (void*) &op0NNN }, { 0, (void*) &op0NNN },
+		{ 0, (void*) &op0NNN }, { 0, (void*) &op0NNN },
+
+		{ 0, (void*) &op0NNN }, { 0, (void*) &op0NNN }, { 0, (void*) &op0NNN },
+		{ 0, (void*) &op0NNN }, { 0, (void*) &op0NNN },
+
+		{ 0, (void*) &op0NNN }, { 0, (void*) &op0NNN }, { 0, (void*) &op0NNN },
+		{ 0, (void*) &op0NNN }, { 0, (void*) &op0NNN },
+
+		{ 0, (void*) &op0NNN }, { 0, (void*) &op0NNN }, { 0, (void*) &op0NNN },
+		{ 0, (void*) &op0NNN }, { 0, (void*) &op0NNN },
+
+		{ 0, (void*) &op0NNN }, { 0, (void*) &op0NNN }, { 0, (void*) &op0NNN },
+		{ 0, (void*) &op0NNN }, { 0, (void*) &op0NNN },
+
+		{ 0, (void*) &op0NNN }, { 0, (void*) &op0NNN }, { 0, (void*) &op0NNN },
+		{ 0, (void*) &op0NNN }, { 0, (void*) &op0NNN },
+
+		{ 0, (void*) &op0NNN }, { 0, (void*) &op0NNN }, { 0, (void*) &op0NNN },
+		{ 0, (void*) &op0NNN }, { 0, (void*) &op0NNN }
+	};
 
 	// See wikipedia for list of opcode instructions
 	static void op0NNN();
