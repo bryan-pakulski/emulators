@@ -23,26 +23,26 @@ private:
 	cpu *proc;
 
 	std::map< int , void* > oplist = {
-		{ 0, (void*) &op0NNN }, { 0, (void*) &op0NNN }, { 0, (void*) &op0NNN },
-		{ 0, (void*) &op0NNN }, { 0, (void*) &op0NNN },
+		{ 0, (void*) &op0NNN }, { 1, (void*) &op0NNN }, { 2, (void*) &op0NNN },
+		{ 3, (void*) &op0NNN }, { 4, (void*) &op0NNN },
 
-		{ 0, (void*) &op0NNN }, { 0, (void*) &op0NNN }, { 0, (void*) &op0NNN },
-		{ 0, (void*) &op0NNN }, { 0, (void*) &op0NNN },
+		{ 4, (void*) &op0NNN }, { 6, (void*) &op0NNN }, { 7, (void*) &op0NNN },
+		{ 8, (void*) &op0NNN }, { 9, (void*) &op0NNN },
 
-		{ 0, (void*) &op0NNN }, { 0, (void*) &op0NNN }, { 0, (void*) &op0NNN },
-		{ 0, (void*) &op0NNN }, { 0, (void*) &op0NNN },
+		{ 10, (void*) &op0NNN }, { 11, (void*) &op0NNN }, { 12, (void*) &op0NNN },
+		{ 13, (void*) &op0NNN }, { 14, (void*) &op0NNN },
 
-		{ 0, (void*) &op0NNN }, { 0, (void*) &op0NNN }, { 0, (void*) &op0NNN },
-		{ 0, (void*) &op0NNN }, { 0, (void*) &op0NNN },
+		{ 15, (void*) &op0NNN }, { 16, (void*) &op0NNN }, { 17, (void*) &op0NNN },
+		{ 18, (void*) &op0NNN }, { 19, (void*) &op0NNN },
 
-		{ 0, (void*) &op0NNN }, { 0, (void*) &op0NNN }, { 0, (void*) &op0NNN },
-		{ 0, (void*) &op0NNN }, { 0, (void*) &op0NNN },
+		{ 20, (void*) &op0NNN }, { 21, (void*) &op0NNN }, { 22, (void*) &op0NNN },
+		{ 23, (void*) &op0NNN }, { 24, (void*) &op0NNN },
 
-		{ 0, (void*) &op0NNN }, { 0, (void*) &op0NNN }, { 0, (void*) &op0NNN },
-		{ 0, (void*) &op0NNN }, { 0, (void*) &op0NNN },
+		{ 25, (void*) &op0NNN }, { 26, (void*) &op0NNN }, { 27, (void*) &op0NNN },
+		{ 28, (void*) &op0NNN }, { 29, (void*) &op0NNN },
 
-		{ 0, (void*) &op0NNN }, { 0, (void*) &op0NNN }, { 0, (void*) &op0NNN },
-		{ 0, (void*) &op0NNN }, { 0, (void*) &op0NNN }
+		{ 30, (void*) &op0NNN }, { 31, (void*) &op0NNN }, { 32, (void*) &op0NNN },
+		{ 33, (void*) &op0NNN }, { 34, (void*) &op0NNN }
 	};
 
 	// See wikipedia for list of opcode instructions
