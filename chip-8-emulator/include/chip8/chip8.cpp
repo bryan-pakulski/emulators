@@ -19,12 +19,7 @@ chip8::chip8( char* path )
 	running = screen->initialiseDisplay();
 
 	if (running)
-	{
-		// TODO: Load game into memory
-
-		// Start game
 		gameloop();
-	}
 	else
 		cerr << "Emulator could not be initialised" << endl;
 }

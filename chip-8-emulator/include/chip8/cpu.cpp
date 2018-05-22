@@ -15,6 +15,10 @@ cpu::~cpu()
 
 }
 
+/**
+ * Getter and setter functions for member variables
+ */
+
 unsigned short cpu::getI()
 {
 	return I;
