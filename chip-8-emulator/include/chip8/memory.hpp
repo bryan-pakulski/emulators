@@ -15,7 +15,8 @@ class memory
 		~memory();
 
 		// Gets instruction at index
-		unsigned char get(int);
+		unsigned char get( int );
+		void set( int, unsigned char )
 
 	private:
 		unsigned char mem[4096];

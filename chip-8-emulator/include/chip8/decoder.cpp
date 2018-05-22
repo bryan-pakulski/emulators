@@ -46,7 +46,7 @@ void decoder::loadGame()
 /**
  * @brief      Loads the game buffer into memory
  */
-void decoder::loadMem()
+void decoder::loadMem( )
 {
 	
 }

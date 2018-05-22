@@ -18,10 +18,8 @@ class decoder
 		explicit decoder( char* game_path );
 		~decoder();
 
-		// Loads a game via internal path
 		void loadGame();
-
-		void loadMem();
+		void loadMem( );
 
 		bool loaded;
 
