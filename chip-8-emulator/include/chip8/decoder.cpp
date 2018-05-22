@@ -7,6 +7,8 @@ decoder::decoder(char *game_path, memory *m) : path(game_path), mem(m)
 	cout << "Loading game from... " << path << endl;
 
 	loadGame();
+
+	loadMem();
 }
 
 decoder::~decoder()
@@ -23,7 +25,7 @@ void decoder::loadGame()
 	// Load into buffer
 	ifstream game( path, std::ios::binary );
 
-	game_buffer = vector<char>(
+	game_buffer = vector<unsigned char>(
 		(istreambuf_iterator<char>(game)),
 		(istreambuf_iterator<char>())
 	);
@@ -36,7 +38,7 @@ void decoder::loadGame()
 	}
 	else
 	{
-		cerr << "Game loaded successfully into memory..." << endl;
+		cerr << "Game loaded successfully into buffer..." << endl;
 		loaded = true;
 	}
 
@@ -47,6 +49,14 @@ void decoder::loadGame()
  * @brief      Loads the game buffer into memory
  */
 void decoder::loadMem()
-{
-	
+{	
+	cerr << "Loading game into memory..." << endl;
+
+	int index = 0x200;
+	for ( unsigned char &value : game_buffer )
+	{
+		mem->set(index, value);
+	}
+
+	cerr << "Successfully loaded game into memory..." << endl;
 }

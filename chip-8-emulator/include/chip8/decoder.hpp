@@ -33,7 +33,7 @@ class decoder
 		memory *mem;
 
 		std::string path;
-		std::vector<char> game_buffer;
+		std::vector<unsigned char> game_buffer;
 };
 
 #endif
