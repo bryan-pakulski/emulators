@@ -10,7 +10,7 @@
 #include <vector>
 #include <bitset>
 
-#define MAX_GAMESIZE 8192 // Max 8kb games
+#define MAX_GAMESIZE 0x0DFF // Based on memory range of 0x200 - 0xFFF
 
 class decoder
 {
@@ -20,7 +20,9 @@ class decoder
 
 		// Loads a game via internal path
 		void loadGame();
-		
+
+		void loadMem();
+
 		bool loaded;
 
 	private:

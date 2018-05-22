@@ -15,6 +15,46 @@ cpu::~cpu()
 
 }
 
+unsigned short cpu::getI()
+{
+	return I;
+}
+
+void cpu::setI( unsigned short value )
+{
+	I = value;
+}
+
+unsigned short cpu::getPC()
+{
+	return PC;
+}
+
+void cpu::setPC( unsigned short value )
+{
+	PC = value;
+}
+
+unsigned short cpu::getOP()
+{
+	return op;
+}
+
+void cpu::setOP( unsigned short value )
+{
+	op = value;
+}
+
+unsigned char cpu::getV(int index)
+{
+	return V[index];
+}
+
+void cpu::setV(int index, unsigned char value)
+{
+	V[index] = value;
+}
+
 /**
  * @brief      Fetch next opcode
  *
@@ -32,7 +72,7 @@ void cpu::cycle()
 {
 	// Fetch opcode
 	op = fetchNextOpcode();
-
-	// Decode opcode (returns an index for the opcode lookup table)
 	
+	// Decode opcode and execute
+	lookup->execute( op );
 }

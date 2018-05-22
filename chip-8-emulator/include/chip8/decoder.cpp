@@ -14,8 +14,9 @@ decoder::~decoder()
 
 }
 
+
 /**
- * Loads a ROM file into game_data
+ * @brief      Loads a ROM file into the game buffer
  */
 void decoder::loadGame()
 {
@@ -40,4 +41,12 @@ void decoder::loadGame()
 	}
 
 	game.close();
+}
+
+/**
+ * @brief      Loads the game buffer into memory
+ */
+void decoder::loadMem()
+{
+	
 }

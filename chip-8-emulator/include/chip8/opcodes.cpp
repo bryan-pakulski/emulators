@@ -12,6 +12,16 @@ opcode::~opcode()
 
 }
 
+/**
+ * @brief      Executes a function from the hashtable at a given index
+ *
+ * @param[in]  o     opcode
+ */
+void opcode::execute( unsigned short o )
+{
+
+}
+
 
 /**
  * @brief      Calls RCA 1802 program at address NNN.
@@ -192,7 +202,8 @@ void opcode::op9XY0()
  */
 void opcode::opANNN()
 {
-
+	proc->setI( proc->getOP() & 0xFFF );
+	proc->setPC( proc->getPC() + 2 );
 }
 
 /**
