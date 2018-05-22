@@ -9,7 +9,7 @@ opcode::opcode( cpu *p ) : proc(p)
 
 opcode::~opcode()
 {
-
+	delete proc;
 }
 
 /**

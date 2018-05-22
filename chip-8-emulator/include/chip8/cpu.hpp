@@ -14,6 +14,8 @@ class cpu
 		cpu();
 		~cpu();
 
+		memory mem = memory();
+
 		void cycle();						// Contains function calls to complete 1 cycle
 
 		// Getter and setter functions
@@ -35,8 +37,7 @@ class cpu
 		unsigned short I;				// Index register
 		unsigned short PC;			// Program counter 0x000 -> 0xFFF
 		unsigned short op;			// Current opcode
-
-		memory mem = memory();
+		
 		opcode *lookup;
 
 		unsigned short fetchNextOpcode();		// Fetch next opcode from memory

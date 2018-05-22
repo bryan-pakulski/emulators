@@ -9,10 +9,13 @@ using namespace std;
  */
 chip8::chip8( char* path )
 {
-	loader = new decoder( path );
-	screen = new display();
+	// Initialise cpu and memory space so that the loader can
+	// Access it
 	cp     = new cpu();
 
+	loader = new decoder( path, &cp->mem );
+	screen = new display();
+	
 	running = screen->initialiseDisplay();
 
 	if (running)

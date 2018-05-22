@@ -2,7 +2,7 @@
 
 using namespace std;
 
-decoder::decoder(char* game_path) : path(game_path)
+decoder::decoder(char *game_path, memory *m) : path(game_path), mem(m)
 {
 	cout << "Loading game from... " << path << endl;
 
@@ -11,7 +11,7 @@ decoder::decoder(char* game_path) : path(game_path)
 
 decoder::~decoder()
 {
-
+	delete mem;
 }
 
 
@@ -46,7 +46,7 @@ void decoder::loadGame()
 /**
  * @brief      Loads the game buffer into memory
  */
-void decoder::loadMem( )
+void decoder::loadMem()
 {
 	
 }
