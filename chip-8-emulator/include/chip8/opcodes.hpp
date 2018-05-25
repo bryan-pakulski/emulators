@@ -21,6 +21,8 @@ public:
 	~opcode();
 
 	void execute( unsigned short );
+	int lookup( unsigned short );
+	int decode( unsigned short );
 
 private:
 	// Opcode functions need access to memory and other values that the cpu uses
@@ -49,6 +51,10 @@ private:
 		{ 30,  &opcode::opFX1E }, { 31,  &opcode::opFX29 }, { 32,  &opcode::opFX33 },
 		{ 33,  &opcode::opFX55 }, { 34,  &opcode::opFX65 }
 	};
+
+	// This gets populated during runtime with opcodes, a hashtable is built so that
+	// the most used opcodes don't have to be decoded i.e. main game loop
+	std::map< unsigned short, int > optable = {};
 
 	// See wikipedia for list of opcode instructions
 	void op0NNN();

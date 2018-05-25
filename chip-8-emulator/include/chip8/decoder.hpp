@@ -24,6 +24,7 @@ class decoder
 
 		void loadGame();
 		void loadMem();
+		int* buildOPTable();
 
 		bool loaded;
 

@@ -19,23 +19,215 @@ opcode::~opcode()
  */
 void opcode::execute( unsigned short o )
 {
-	switch ( o & 0xF000 )
+	int instruction = lookup( o );
+
+	if ( instruction == -1 )
 	{
-		case 0x0:
-			switch ( o & 0xFFFF )
+		instruction = decode( o );
+		optable.insert( std::pair<int, unsigned short>(instruction, o) );
+	}
+
+	//(void*)oplist[instruction]->();
+}
+
+/**
+ * @brief      checks if an instruction already exists in the optable
+ *             If not it will be decoded and added for faster lookup next time
+ *
+ * @param[in]  o     Opcode
+ *
+ * @return     Returns the index location of function to call
+ */
+int opcode::lookup( unsigned short o )
+{
+	// Find in optable
+	auto search = optable.find(o);
+
+	if ( search != optable.end() )
+		return search->second;
+	else
+		return -1;
+}
+
+/**
+ * @brief      Decodes a given opcode and returns an index
+ *
+ * @param[in]  o     Opcode
+ *
+ * @return     Returns the index location of the function to call
+ */
+int opcode::decode( unsigned short o )
+{
+	switch( o & 0xF000)
+	{
+		case 0x0000:
+			switch( o & 0x0F00 )
 			{
-				case 0x00E0:
-					oplist[1];
+				case 0x0000:
+					switch( o & 0x000F )
+					{
+						case 0x0000:
+							return 1;
+						break;
+
+						case 0x000E:
+							return 2;
+						break;
+					}
 				break;
 
-				case 0x00EE:
-					oplist[2];
+				default:
+					return 0;
+			}
+		break;
+
+		case 0x1000:
+			return 3;
+		break;
+
+		case 0x2000:
+			return 4;
+		break;
+
+		case 0x3000:
+			return 5;
+		break;
+
+		case 0x4000:
+			return 6;
+		break;
+
+		case 0x5000:
+			return 7;
+		break;
+
+		case 0x6000:
+			return 8;
+		break;
+
+		case 0x7000:
+			return 9;
+		break;
+
+		case 0x8000:
+			switch( o & 0x000F )
+			{
+				case 0x0000:
+					return 10;
+				break;
+
+				case 0x0001:
+					return 11;
+				break;
+
+				case 0x0002:
+					return 12;
+				break;
+
+				case 0x0003:
+					return 13;
+				break;
+
+				case 0x0004:
+					return 14;
+				break;
+
+				case 0x0005:
+					return 15;
+				break;
+
+				case 0x0006:
+					return 16;
+				break;
+
+				case 0x0007:
+					return 17;
+				break;
+
+				case 0x000E:
+					return 18;
+				break;
+			}
+		break;
+
+		case 0x9000:
+			return 19;
+		break;
+
+		case 0xA000:
+			return 20;
+		break;
+
+		case 0xB000:
+			return 21;
+		break;
+
+		case 0xC000:
+			return 22;
+		break;
+
+		case 0xD000:
+			return 23;
+		break;
+
+		case 0xE000:
+			switch( o & 0x00FF )
+			{
+				case 0x009E:
+					return 24;
+				break;
+
+				case 0x00A1:
+					return 25;
+				break;
+			}
+		break;
+
+		case 0xF000:
+			switch ( o & 0x00FF )
+			{
+				case 0x0007:
+					return 26;
+				break;
+
+				case 0x000A:
+					return 27;
+				break;
+
+				case 0x0015:
+					return 28;
+				break;
+
+				case 0x0018:
+					return 29;
+				break;
+
+				case 0x001E:
+					return 30;
+				break;
+
+				case 0x0029:
+					return 31;
+				break;
+
+				case 0x0033:
+					return 32;
+				break;
+
+				case 0x0055:
+					return 33;
+				break;
+
+				case 0x0065:
+					return 34;
 				break;
 			}
 		break;
 	}
-}
 
+	cerr << "Unknown opcode encountered: " << o << endl;
+	return -1;
+}
 
 /**
  * @brief      Calls RCA 1802 program at address NNN.
