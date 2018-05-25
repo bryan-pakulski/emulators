@@ -4,7 +4,7 @@ using namespace std;
 
 opcode::opcode( cpu *p ) : proc(p)
 {
-	
+
 }
 
 opcode::~opcode()
@@ -19,7 +19,21 @@ opcode::~opcode()
  */
 void opcode::execute( unsigned short o )
 {
+	switch ( o & 0xF000 )
+	{
+		case 0x0:
+			switch ( o & 0xFFFF )
+			{
+				case 0x00E0:
+					oplist[1];
+				break;
 
+				case 0x00EE:
+					oplist[2];
+				break;
+			}
+		break;
+	}
 }
 
 

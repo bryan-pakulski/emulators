@@ -1,11 +1,7 @@
 #include "cpu.hpp"
 
-cpu::cpu()
+cpu::cpu() : drawFlag( true ), I( 0 ), PC( 0x200 ), op( 0 ), sp( 0 )
 {
-	PC = 0x200; // Program counter starts at 0x200
-	op = 0;
-	I = 0;
-
 	// Initialise opcode hastable
 	lookup = new opcode( this );
 }
@@ -79,4 +75,6 @@ void cpu::cycle()
 	
 	// Decode opcode and execute
 	lookup->execute( op );
+
+	// Update timers
 }

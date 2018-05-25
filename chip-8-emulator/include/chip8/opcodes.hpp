@@ -29,7 +29,7 @@ private:
 
 	std::map< int, void(opcode::*)() > oplist = {
 		{ 0,  &opcode::op0NNN }, { 1,  &opcode::op00E0 }, { 2,  &opcode::op00EE },
-		{ 3,  &opcode::op1NNN }, { 4,  &opcode::op1NNN },
+		{ 3,  &opcode::op1NNN }, { 4,  &opcode::op2NNN },
 
 		{ 4,  &opcode::op3XNN }, { 6,  &opcode::op4XNN }, { 7,  &opcode::op5XY0 },
 		{ 8,  &opcode::op6XNN }, { 9,  &opcode::op7XNN },

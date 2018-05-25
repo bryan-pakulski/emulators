@@ -33,18 +33,22 @@ void chip8::gameloop()
 {
 	while (running)
 	{
-		// Get events from queue
+		// Get events from queue and get keypad input
 		while ( SDL_PollEvent( &e ) != 0 )
 		{
 			if (e.type == SDL_QUIT)
 				running = false;
 		}
 
-		// update non event opcodes
+		// Fetch and execute opcode
 		cp->cycle();
 
-		// TODO:
 		// Update display when cpu draw flag is raised
-		screen->doUpdate();
+		if ( cp->drawFlag )
+		{
+			screen->doUpdate();
+			cp->drawFlag = !cp->drawFlag;
+		}
+		
 	}
 }

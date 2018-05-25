@@ -17,6 +17,8 @@ class chip8
 		// Performs all logic/display updates
 		void gameloop();
 
+		void initialise();
+
 	private:
 		decoder *loader;
 		display *screen;

@@ -2,7 +2,7 @@
 
 using namespace std;
 
-decoder::decoder(char *game_path, memory *m) : path(game_path), mem(m)
+decoder::decoder(char *game_path, memory *m) : mem(m), path(game_path)
 {
 	cout << "Loading game from... " << path << endl;
 

@@ -2,7 +2,11 @@
 
 memory::memory()
 {
+	// Load fontset
+	for ( int i = 0; i < 80; i++ )
+		set( i, chip8_fontset[i] );
 
+	std::cerr << "Initialised fontset" << std::endl;
 }
 
 memory::~memory()
