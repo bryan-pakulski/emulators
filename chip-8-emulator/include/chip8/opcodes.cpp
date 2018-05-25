@@ -24,10 +24,16 @@ void opcode::execute( unsigned short o )
 	if ( instruction == -1 )
 	{
 		instruction = decode( o );
-		optable.insert( std::pair<int, unsigned short>(instruction, o) );
-	}
 
-	//(void*)oplist[instruction]->();
+		if ( instruction != -1 )
+		{
+			cerr << "Inserting new opcode: " << o << " with key: " << instruction << endl; 
+			optable.insert( std::pair<unsigned short, int>(o, instruction) );
+
+			auto f = oplist[instruction];
+			(*this.*f)();
+		}
+	}
 }
 
 /**
@@ -58,6 +64,7 @@ int opcode::lookup( unsigned short o )
  */
 int opcode::decode( unsigned short o )
 {
+	cerr << "Parsing new opcode: " << o << endl;
 	switch( o & 0xF000)
 	{
 		case 0x0000:
@@ -243,7 +250,8 @@ void opcode::op0NNN()
  */
 void opcode::op00E0()
 {
-
+	proc->clearScreen = true;
+	proc->setPC( proc->getPC() + 2 );
 }
 
 /**
@@ -251,7 +259,7 @@ void opcode::op00E0()
  */
 void opcode::op00EE()
 {
-
+	
 }
 
 /**

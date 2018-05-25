@@ -16,6 +16,7 @@ class cpu
 
 		memory mem = memory();
 		bool drawFlag;
+		bool clearScreen;
 
 		void cycle();						// Contains function calls to complete 1 cycle
 

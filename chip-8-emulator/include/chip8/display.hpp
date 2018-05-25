@@ -5,7 +5,7 @@
 #include <iostream>
 
 const int SCREEN_WIDTH = 640;
-const int SCREEN_HEIGHT = 480;
+const int SCREEN_HEIGHT = 320;
 
 class display
 {
@@ -24,6 +24,9 @@ class display
 		SDL_Window* gWindow;
 		SDL_Surface* screenSurface;
 		SDL_Renderer* gRenderer;
+
+		// Scale of render display
+		unsigned char gfx[ 64 * 32 ];
 };
 
 

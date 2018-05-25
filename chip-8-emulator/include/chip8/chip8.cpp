@@ -43,12 +43,17 @@ void chip8::gameloop()
 		// Fetch and execute opcode
 		cp->cycle();
 
+		// Check if we need to clear the screen
+		if ( cp->clearScreen )
+		{
+			// TODO: clear screen;
+			cp->clearScreen = !cp->clearScreen;
+		}
 		// Update display when cpu draw flag is raised
 		if ( cp->drawFlag )
 		{
 			screen->doUpdate();
 			cp->drawFlag = !cp->drawFlag;
 		}
-		
 	}
 }

@@ -1,6 +1,7 @@
 #include "cpu.hpp"
 
-cpu::cpu() : drawFlag( true ), I( 0 ), PC( 0x200 ), op( 0 ), sp( 0 )
+cpu::cpu() : drawFlag( true ), clearScreen( true ),
+						 I( 0 ), PC( 0x200 ), op( 0 ), sp( 0 )
 {
 	// Initialise opcode hastable
 	lookup = new opcode( this );
