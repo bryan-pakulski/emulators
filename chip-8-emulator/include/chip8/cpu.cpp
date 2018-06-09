@@ -31,9 +31,9 @@ unsigned short cpu::getPC()
 	return PC;
 }
 
-void cpu::setPC( unsigned short value )
+void cpu::incrementPC( int value )
 {
-	PC = value;
+	PC += ( 2 * value );
 }
 
 unsigned short cpu::getOP()

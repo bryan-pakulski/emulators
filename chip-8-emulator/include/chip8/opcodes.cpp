@@ -251,7 +251,7 @@ void opcode::op0NNN()
 void opcode::op00E0()
 {
 	proc->clearScreen = true;
-	proc->setPC( proc->getPC() + 2 );
+	proc->incrementPC(1);
 }
 
 /**
@@ -285,7 +285,13 @@ void opcode::op2NNN()
  */
 void opcode::op3XNN()
 {
+	int x = (int) (proc->getOP() & 0x0F00);
+	int n = (int) (proc->getOP() & 0x00FF);
 
+	if ( proc->getV( x ) == n )
+		proc->incrementPC(2);
+	else
+		proc->incrementPC(1);
 }
 
 /**
@@ -293,7 +299,13 @@ void opcode::op3XNN()
  */
 void opcode::op4XNN()
 {
+	int x = (int) (proc->getOP() & 0x0F00);
+	int n = (int) (proc->getOP() & 0x00FF);
 
+	if ( proc->getV( x ) != n )
+		proc->incrementPC(2);
+	else
+		proc->incrementPC(1);
 }
 
 /**
@@ -301,7 +313,13 @@ void opcode::op4XNN()
  */
 void opcode::op5XY0()
 {
+	int x = (int) (proc->getOP() & 0x0F00);
+	int y = (int) (proc->getOP() & 0x00F0);
 
+	if ( proc->getV( x ) == proc->getV( y ) )
+		proc->incrementPC(2);
+	else
+		proc->incrementPC(1);
 }
 
 /**
@@ -309,7 +327,11 @@ void opcode::op5XY0()
  */
 void opcode::op6XNN()
 {
+	int x = (int) (proc->getOP() & 0x0F00);
+	unsigned char n = (proc->getOP() & 0x00FF);
 
+	proc->setV(x, n);
+	proc->incrementPC(1);
 }
 
 /**
@@ -317,7 +339,11 @@ void opcode::op6XNN()
  */
 void opcode::op7XNN()
 {
+	int x = (int) (proc->getOP() & 0x0F00);
+	unsigned char n = (proc->getOP() & 0x00FF);
 
+	proc->setV( x, ( proc->getV(x) + n ) );
+	proc->incrementPC(1);
 }
 
 
@@ -417,7 +443,7 @@ void opcode::op9XY0()
 void opcode::opANNN()
 {
 	proc->setI( proc->getOP() & 0xFFF );
-	proc->setPC( proc->getPC() + 2 );
+	proc->incrementPC(1);
 }
 
 /**
