@@ -316,7 +316,7 @@ void opcode::op5XY0()
 	int x = (int) (proc->getOP() & 0x0F00);
 	int y = (int) (proc->getOP() & 0x00F0);
 
-	if ( proc->getV( x ) == proc->getV( y ) )
+	if ( proc->getV(x) == proc->getV(y) )
 		proc->incrementPC(2);
 	else
 		proc->incrementPC(1);
@@ -353,7 +353,11 @@ void opcode::op7XNN()
  */
 void opcode::op8XY0()
 {
+	int x = (int) (proc->getOP() & 0x0F00);
+	int y = (int) (proc->getOP() & 0x00F0);
 
+	proc->setV( x, proc->getV( y ) );
+	proc->incrementPC(1);
 }
 
 /**
@@ -361,7 +365,11 @@ void opcode::op8XY0()
  */
 void opcode::op8XY1()
 {
+	int x = (int) (proc->getOP() & 0x0F00);
+	int y = (int) (proc->getOP() & 0x00F0);
 
+	proc->setV( x, ( proc->getV(x) | proc->getV(y) ) );
+	proc->incrementPC(1);
 }
 
 /**
@@ -369,7 +377,11 @@ void opcode::op8XY1()
  */
 void opcode::op8XY2()
 {
+	int x = (int) (proc->getOP() & 0x0F00);
+	int y = (int) (proc->getOP() & 0x00F0);
 
+	proc->setV( x, ( proc->getV(x) & proc->getV(y) ) );
+	proc->incrementPC(1);
 }
 
 /**
@@ -377,7 +389,11 @@ void opcode::op8XY2()
  */
 void opcode::op8XY3()
 {
+	int x = (int) (proc->getOP() & 0x0F00);
+	int y = (int) (proc->getOP() & 0x00F0);
 
+	proc->setV( x, ( proc->getV(x) ^ proc->getV(y) ) );
+	proc->incrementPC(1);
 }
 
 /**
@@ -432,7 +448,13 @@ void opcode::op8XYE()
  */
 void opcode::op9XY0()
 {
+	int x = (int) ( proc->getOP() & 0x0F00 );
+	int y = (int) ( proc->getOP() & 0x00F0 );
 
+	if ( proc->getV(x) != proc->getV(y) )
+		proc->incrementPC(2);
+	else
+		proc->incrementPC(1);
 }
 
 
