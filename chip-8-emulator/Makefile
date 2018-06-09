@@ -71,8 +71,8 @@ $(EXECUTABLE): $(OBJECTS)
 	fi
 
 	# Run file if run is set to true
+	# export DISPLAY=:0;\ (Windows fix for x)
 	if [ "$(RUN)" = "ON" ]; then \
-		export DISPLAY=:0;\
 		$(TERM) $(TERMARGS) "./$(BIN)/$(EXECUTABLE) $(EXECUTABLE_ARGUMENTS)"; \
 	fi
 

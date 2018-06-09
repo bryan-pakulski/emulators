@@ -22,7 +22,6 @@ display::~display()
 bool display::initialiseDisplay()
 {
 	gWindow = NULL;
-	screenSurface = NULL;
 	gRenderer = NULL;
 
 	// Initialise SDL
@@ -50,8 +49,6 @@ bool display::initialiseDisplay()
 		}
 		else
 		{
-			screenSurface = SDL_GetWindowSurface( gWindow );
-
 			// Initialise renderer for window
 			gRenderer= SDL_CreateRenderer( gWindow, -1, SDL_RENDERER_ACCELERATED );
 			if ( !gRenderer )

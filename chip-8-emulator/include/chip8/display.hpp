@@ -22,7 +22,6 @@ class display
 
 	private:
 		SDL_Window* gWindow;
-		SDL_Surface* screenSurface;
 		SDL_Renderer* gRenderer;
 
 		// Scale of render display
