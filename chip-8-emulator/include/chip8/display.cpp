@@ -17,12 +17,16 @@ display::~display()
 /**
  * @brief      Draws a "pixel" on screen, each pixel is multiplied by screen ratio so in reality it's 10px or so big
  *
- * @param[in]  x         x position relative to the emulator screen width, max 64
- * @param[in]  y         y position relvative to the emulator screen height, max 32
+ * @param[in]  x         x position relative to the emulator screen width, max 63
+ * @param[in]  y         y position relvative to the emulator screen height, max 31
  * @param      renderer  The renderer to draw to
  */
 void display::drawPixel( int x, int y, SDL_Renderer* renderer)
 {
+	// Sanity check
+	if ( ( x > 63 || y > 31 ) || () )
+		cerr << "Rendering error, drawing offscreen at coordinates " << x << ", " << y << endl;
+
 	int ratioW = SCREEN_WIDTH / EM_WIDTH;
 	int ratioH = SCREEN_HEIGHT / EM_HEIGHT;
 
@@ -96,7 +100,7 @@ void display::doUpdate()
 	// TODO:
 	// Add render code
 	
-	drawPixel( 2, 3, gRenderer);
+	drawPixel( 63, 3, gRenderer);
 	drawPixel( 0, 0, gRenderer);
 
 	// Updates display
