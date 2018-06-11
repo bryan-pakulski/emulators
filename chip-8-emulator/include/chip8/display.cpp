@@ -24,7 +24,7 @@ display::~display()
 void display::drawPixel( int x, int y, SDL_Renderer* renderer)
 {
 	// Sanity check
-	if ( ( x > 63 || y > 31 ) || ( x < 0 || y << 0 ) )
+	if ( ( x > 63 || y > 31 ) || ( x < 0 || y < 0 ) )
 		cerr << "Rendering error, drawing offscreen at coordinates " << x << ", " << y << endl;
 
 	int ratioW = SCREEN_WIDTH / EM_WIDTH;
