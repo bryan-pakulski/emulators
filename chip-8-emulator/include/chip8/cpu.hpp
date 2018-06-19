@@ -26,14 +26,16 @@ class cpu
 
 		unsigned short getPC();
 		void incrementPC( int value );
+		void setPC( unsigned short value );
 
 		unsigned short getOP();
 		void setOP( unsigned short value );
 
-		unsigned char getV(int index);
-		void setV(int index, unsigned char value);
+		unsigned char getV( int index );
+		void setV( int index, unsigned char value );
 
-
+		unsigned short popStatck();
+		void pushStack( unsigned short value );
 
 	private:
 		unsigned char V[16] { 0 };					// CPU registers, 16th is carry flag

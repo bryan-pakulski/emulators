@@ -36,6 +36,11 @@ void cpu::incrementPC( int value )
 	PC += ( 2 * value );
 }
 
+void cpu::setPC( unsigned short value)
+{
+	PC = value;
+}
+
 unsigned short cpu::getOP()
 {
 	return op;
@@ -54,6 +59,25 @@ unsigned char cpu::getV(int index)
 void cpu::setV(int index, unsigned char value)
 {
 	V[index] = value;
+}
+
+unsigned short cpu::popStatck()
+{
+	unsigned short val = stack[sp];
+	--sp;
+
+	return val;
+}
+
+/**
+ * @brief      Pushes to stack and increments stack pointer to stop data overwriting
+ *
+ * @param[in]  value  The value to index
+ */
+void cpu::pushStack( unsigned short value )
+{
+	stack[sp] = value;
+	++sp;
 }
 
 /**

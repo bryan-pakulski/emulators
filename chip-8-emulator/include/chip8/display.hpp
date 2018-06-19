@@ -20,6 +20,7 @@ class display
 
 		// Iinitialise SDL window
 		bool initialiseDisplay();
+		
 		// Update loop
 		void doUpdate();
 		void drawPixel( int x, int y, SDL_Renderer* renderer);

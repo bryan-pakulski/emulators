@@ -275,7 +275,8 @@ void opcode::op1NNN()
  */
 void opcode::op2NNN()
 {
-
+	proc->pushStack( proc->getPC() );
+	proc->setPC( proc->getOP() & 0x0FFF );
 }
 
 
