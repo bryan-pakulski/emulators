@@ -3,6 +3,8 @@
 
 #include <SDL.h>
 #include <iostream>
+#include <stdio.h>
+#include <string.h>
 
 // EMULATOR WIDTH MUST BE AN EVEN DIVISION OF THE ACTUAL SCREEN WIDTH
 // This is a limitation in the drawPixel function as ratios are calculated as
@@ -24,6 +26,8 @@ class display
 		// Update loop
 		void doUpdate();
 		void drawPixel( int x, int y, SDL_Renderer* renderer);
+
+		void clear();
 
 		bool init_flag;
 

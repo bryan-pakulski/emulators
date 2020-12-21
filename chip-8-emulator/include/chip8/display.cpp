@@ -24,7 +24,7 @@ display::~display()
 void display::drawPixel( int x, int y, SDL_Renderer* renderer)
 {
 	// Sanity check
-	if ( ( x > 63 || y > 31 ) || ( x < 0 || y < 0 ) )
+	if ( ( x > EM_WIDTH - 1 || y > EM_HEIGHT - 1 ) || ( x < 0 || y < 0 ) )
 		cerr << "Rendering error, drawing offscreen at coordinates " << x << ", " << y << endl;
 
 	int ratioW = SCREEN_WIDTH / EM_WIDTH;
@@ -89,19 +89,33 @@ bool display::initialiseDisplay()
 }
 
 /**
+ * @brief      Clears gfx memory buffer
+ *
+ */
+void display::clear()
+{
+	memset(gfx, 0, sizeof(gfx));
+}
+
+
+/**
  * @brief      Updates SDL display
  */
 void display::doUpdate()
-{
+{	
 	// Clears the screen
 	SDL_SetRenderDrawColor( gRenderer, 0x00, 0x00, 0x00, 0x00 );
 	SDL_RenderClear( gRenderer );
 
-	// TODO:
-	// Add render code
-	
-	drawPixel( 63, 3, gRenderer);
-	drawPixel( 0, 0, gRenderer);
+	// Draw GFX array to screen
+	for (int i = 0; i < EM_WIDTH; i++)
+	{
+		for (int j = 0; j < EM_HEIGHT; j++)
+		{
+			if (gfx[ EM_WIDTH * j + i] == 1)
+				drawPixel(i, j, gRenderer);
+		}
+	}
 
 	// Updates display
 	SDL_RenderPresent( gRenderer );
