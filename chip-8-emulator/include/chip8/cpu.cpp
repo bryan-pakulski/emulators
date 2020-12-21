@@ -1,10 +1,13 @@
 #include "cpu.hpp"
 
-cpu::cpu() : drawFlag( true ), clearScreen( true ),
+cpu::cpu(unsigned char (&g)[64*32]) : drawFlag( true ), clearScreen( true ),
 						 I( 0 ), PC( 0x200 ), op( 0 ), sp( 0 )
 {
 	// Initialise opcode hastable
 	lookup = new opcode( this );
+
+	// Map memory buffer to local variable	
+	gfx = g;
 }
 
 cpu::~cpu()

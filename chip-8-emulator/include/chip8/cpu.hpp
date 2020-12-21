@@ -11,9 +11,10 @@ class cpu
 {
 
 	public:
-		cpu();
+		cpu(unsigned char (&g)[64*32]);
 		~cpu();
 
+		unsigned char* gfx;							// GFX memory buffer (stored in display class)
 		memory mem = memory();
 		bool drawFlag;
 		bool clearScreen;
@@ -44,7 +45,7 @@ class cpu
 		unsigned short op;							// Current opcode
 		unsigned short stack[16] { 0 };				// Stack implementation
 		unsigned short sp;							// Stack pointer
-		
+
 		opcode *lookup;
 
 		unsigned short fetchNextOpcode();			// Fetch next opcode from memory

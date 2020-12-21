@@ -504,7 +504,7 @@ void opcode::opCXNN()
  */
 void opcode::opDXYN()
 {
-	
+
 }
 
 /**

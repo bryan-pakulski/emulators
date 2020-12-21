@@ -9,12 +9,14 @@ using namespace std;
  */
 chip8::chip8( char* path )
 {
-	// Initialise cpu and memory space so that the loader can
-	// Access it
-	cp     = new cpu();
+	// Init SDL display
+	screen = new display();
+
+	// Initialise cpu and memory space so that the loader can access it
+	// Pass through memory buffer to CPU for access
+	cp     = new cpu( screen->gfx );
 
 	loader = new decoder( path, &cp->mem );
-	screen = new display();
 	
 	running = screen->initialiseDisplay();
 
@@ -46,7 +48,6 @@ void chip8::gameloop()
 		// Check if we need to clear the screen
 		if ( cp->clearScreen )
 		{
-			// TODO: clear screen in SDL, below code reverses clear screen flag;
 			cp->clearScreen = !cp->clearScreen;
 			screen->clear();
 		}

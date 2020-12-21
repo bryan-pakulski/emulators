@@ -4,6 +4,7 @@
 #define __OPCODES_HPP__
 
 #include "cpu.hpp"
+#include "display.hpp"
 #include <map>
 #include <string>
 #include <iostream>
@@ -27,7 +28,9 @@ public:
 private:
 	// Opcode functions need access to memory and other values that the cpu uses
 	// This is done via this class pointer
+	// This is also the case for the display which is passed through via the gfx buffer
 	cpu *proc;
+	display *gfx;
 
 	std::map< int, void(opcode::*)() > oplist = {
 		{ 0,  &opcode::op0NNN }, { 1,  &opcode::op00E0 }, { 2,  &opcode::op00EE },

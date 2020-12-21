@@ -31,12 +31,12 @@ class display
 
 		bool init_flag;
 
+		unsigned char gfx[ EM_WIDTH * EM_HEIGHT ];
+
 	private:
 		SDL_Window* gWindow;
 		SDL_Renderer* gRenderer;
-
-		// Scale of render display
-		unsigned char gfx[ EM_WIDTH * EM_HEIGHT ];
+		
 };
 
 

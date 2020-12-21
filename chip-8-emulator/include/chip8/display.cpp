@@ -3,8 +3,9 @@
 using namespace std;
 
 display::display()
-{
-
+{	
+	// Init gfx buffer
+	clear();
 }
 
 display::~display()
