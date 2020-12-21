@@ -4,3 +4,4 @@ chip-8-emulator/tests/*
 chip-8-emulator/lib/*
 chip-8-emulator/obj/*
 
+*.o
