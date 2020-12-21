@@ -97,7 +97,7 @@ void cpu::cycle()
 {
 	// Fetch opcode
 	op = fetchNextOpcode();
-	
+
 	// Decode opcode and execute
 	lookup->execute( op );
 

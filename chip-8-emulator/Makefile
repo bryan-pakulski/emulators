@@ -2,16 +2,16 @@ MODE := C++
 # Compiler to be used
 CC := g++
 # Library files
-LIB := lib
+LIB := -Llib
 # main include folder
 INCF := include
 # Include 
 INC := -Iinclude -Iinclude/chip8 -Iinclude/SDL2
 # Libraries to include
-LDFLAGS := -lSDL2
+LDFLAGS := -l SDL2
 
 # Cflags to be used
-CFLAGS := -std=c++11 -Wall -g $(INC) -I$(LIB) 
+CFLAGS := -std=c++11 -Wall -g $(INC)
 
 # Binary folder location
 BIN := bin
@@ -33,7 +33,7 @@ TERMARGS := -c
 # Program name
 EXECUTABLE := main
 # Program arguments
-EXECUTABLE_ARGUMENTS := bin/roms/INVADERS
+EXECUTABLE_ARGUMENTS := bin/roms/PONG
 
 # Source files
 SOURCES := $(shell find $(SRC) -type f -name "*.cpp") $(shell find $(INCF) -type f -name "*.cpp") $(shell find $(SRC) -type f -name "*.c") $(shell find $(INCF) -type f -name "*.c")
@@ -49,7 +49,7 @@ endif
 # Main target
 $(EXECUTABLE): $(OBJECTS)
 	echo $(SOURCES)
-	$(CC) $(CFLAGS) $(OBJECTS) $(LDFLAGS) -o $(EXECUTABLE)
+	$(CC) $(CFLAGS) $(OBJECTS) -o $(EXECUTABLE) $(LIB) $(LDFLAGS)
 
 	# Create binary folder if it doesn't exist
 	if [ ! -d $(BIN) ]; then \

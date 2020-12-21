@@ -2,6 +2,7 @@
 #define __MEMORY_HPP__
 
 #include <iostream>
+#include <fstream>
 
 /*
  *	Memory map
@@ -15,6 +16,9 @@ class memory
 	public:
 		memory();
 		~memory();
+		
+		// Dumps memory into a human readable text file
+		void dump_memory();
 
 		// Gets instruction at index
 		unsigned char get( int );

@@ -53,10 +53,16 @@ void decoder::loadMem()
 	cerr << "Loading game into memory..." << endl;
 
 	int index = 0x200;
-	for ( unsigned char &value : game_buffer )
+	for ( unsigned char value : game_buffer )
 	{
 		mem->set(index, value);
+
+		index++;
 	}
+
+	// TODO: Remove after debugging
+	// Check that memory is initialised correctly
+	mem->dump_memory();
 
 	cerr << "Successfully loaded game into memory..." << endl;
 }

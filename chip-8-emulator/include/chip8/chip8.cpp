@@ -46,7 +46,7 @@ void chip8::gameloop()
 		// Check if we need to clear the screen
 		if ( cp->clearScreen )
 		{
-			// TODO: clear screen;
+			// TODO: clear screen in SDL, below code reverses clear screen flag;
 			cp->clearScreen = !cp->clearScreen;
 		}
 		// Update display when cpu draw flag is raised

@@ -19,6 +19,8 @@ opcode::~opcode()
  */
 void opcode::execute( unsigned short o )
 {
+	// Check if instruction already exists in opcode lookup table
+	// If not then decode instruction based on HPP header and add to lookup
 	int instruction = lookup( o );
 
 	if ( instruction == -1 )
@@ -27,13 +29,17 @@ void opcode::execute( unsigned short o )
 
 		if ( instruction != -1 )
 		{
-			cerr << "Inserting new opcode: " << o << " with key: " << instruction << endl; 
+			cerr << "Inserting new opcode: " << std::hex << o << " with key: " << std::hex << instruction << endl; 
 			optable.insert( std::pair<unsigned short, int>(o, instruction) );
-
-			auto f = oplist[instruction];
-			(*this.*f)();
 		}
 	}
+
+	//if (decode(o) != -1)
+	//{
+		auto f = oplist[instruction];
+		(*this.*f)();
+	//}
+	
 }
 
 /**
@@ -242,7 +248,7 @@ int opcode::decode( unsigned short o )
  */
 void opcode::op0NNN()
 {
-
+	
 }
 
 /**
@@ -498,7 +504,7 @@ void opcode::opCXNN()
  */
 void opcode::opDXYN()
 {
-
+	
 }
 
 /**

@@ -37,3 +37,19 @@ void memory::set(int index, unsigned char value)
 {
 	mem[index] = value;
 }
+
+/**
+ * @brief		Dumps memory to a human readable text file
+ */
+void memory::dump_memory()
+{
+	std::cerr << "Dumping memory to path: bin/mem_dump" << std::endl; 
+	std::ofstream mem_dump("bin/mem_dump", std::ios::binary );
+
+	for (unsigned char i : mem)
+	{
+		mem_dump << std::hex << i;
+	}
+
+	mem_dump.close();
+}
