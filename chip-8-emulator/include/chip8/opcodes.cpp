@@ -265,7 +265,7 @@ void opcode::op00E0()
  */
 void opcode::op00EE()
 {
-	
+	proc->setPC(proc->popStack());
 }
 
 /**
@@ -273,7 +273,7 @@ void opcode::op00EE()
  */
 void opcode::op1NNN()
 {
-
+	proc->setPC( proc->getOP() & 0x0FFF );
 }
 
 /**
@@ -409,7 +409,18 @@ void opcode::op8XY3()
  */
 void opcode::op8XY4()
 {
+	// Get X, Y values and shift right
+	int x = (int) (proc->getOP() & 0x0F00) >> 8;
+	int y = (int) (proc->getOP() & 0x00F0) >> 4;
 
+	uint16_t sum = proc->getV(x) + proc->getV(y);
+
+	if (sum > 0xFF)
+		proc->setV(0xF, 1);
+	else
+		proc->setV(0xF, 0);
+
+	proc->setV(x, sum & 0xFF);
 }
 
 
@@ -420,6 +431,16 @@ void opcode::op8XY4()
  */
 void opcode::op8XY5()
 {
+	// Get X, Y values and shift right
+	int x = (int) (proc->getOP() & 0x0F00) >> 8;
+	int y = (int) (proc->getOP() & 0x00F0) >> 4;
+
+	if (proc->getV(x) > proc->getV(y))
+		proc->setV(0xF, 1);
+	else
+		proc->setV(0xF, 0);
+
+	proc->setV(x, proc->getV(x) - proc->getV(y));
 
 }
 
@@ -429,7 +450,11 @@ void opcode::op8XY5()
  */
 void opcode::op8XY6()
 {
+	uint8_t x = (proc->getOP() & 0x0F00) >> 8;
 
+	// Get least significant bit
+	proc->setV(0xF, proc->getV(x) & 0x1);
+	proc->setV(x, proc->getV(x) >> 1);
 }
 
 /**
@@ -438,7 +463,15 @@ void opcode::op8XY6()
  */
 void opcode::op8XY7()
 {
+	uint8_t x = (proc->getOP() & 0x0F00) >> 8;
+	uint8_t y = (proc->getOP() & 0x00F0) >> 4;
+	
+	if (proc->getV(y) > proc->getV(x))
+		proc->setV(0xF, 0);
+	else
+		proc->setV(0xF, 1);
 
+	proc->setV(x, proc->getV(y) - proc->getV(x));
 }
 
 /**
@@ -447,7 +480,7 @@ void opcode::op8XY7()
  */
 void opcode::op8XYE()
 {
-
+	
 }
 
 /**
@@ -459,8 +492,6 @@ void opcode::op9XY0()
 	int y = (int) ( proc->getOP() & 0x00F0 );
 
 	if ( proc->getV(x) != proc->getV(y) )
-		proc->incrementPC(2);
-	else
 		proc->incrementPC(1);
 }
 
@@ -471,8 +502,7 @@ void opcode::op9XY0()
  */
 void opcode::opANNN()
 {
-	proc->setI( proc->getOP() & 0xFFF );
-	proc->incrementPC(1);
+	proc->setI( proc->getOP() & 0x0FFF );
 }
 
 /**
@@ -480,7 +510,7 @@ void opcode::opANNN()
  */
 void opcode::opBNNN()
 {
-
+	proc->setPC( (proc->getOP() & 0x0FFF) + proc->getV(0) );
 }
 
 /**
@@ -489,7 +519,13 @@ void opcode::opBNNN()
  */
 void opcode::opCXNN()
 {
+	unsigned char x = (proc->getOP() & 0x0F00) >> 8;
+	unsigned char v_nn = proc->getOP() & 0x00FF;
 
+	
+	// TODO: generate random byte in the following format
+	int r = ((rand() % (0xF + 1 - 0x0)) + 0x0);
+	proc->setV(x, r & v_nn);
 }
 
 /**
@@ -577,7 +613,7 @@ void opcode::opFX29()
 }
 
 /**
- * @brief      Stores the Binary-coded decimalrepresentation of VX,
+ * @brief      Stores the Binary-coded decimal representation of VX,
  * 						 with the most significant of three digits at the address in I,
  * 						 the middle digit at I plus 1, and the least significant digit at
  * 						 I plus 2. (In other words, take the decimalrepresentation of VX,
@@ -587,7 +623,7 @@ void opcode::opFX29()
  */
 void opcode::opFX33()
 {
-
+ 
 }
 
 /**

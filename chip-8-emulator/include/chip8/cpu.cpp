@@ -64,10 +64,10 @@ void cpu::setV(int index, unsigned char value)
 	V[index] = value;
 }
 
-unsigned short cpu::popStatck()
+unsigned short cpu::popStack()
 {
-	unsigned short val = stack[sp];
 	--sp;
+	unsigned short val = stack[sp];
 
 	return val;
 }

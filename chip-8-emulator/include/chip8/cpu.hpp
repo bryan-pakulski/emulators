@@ -35,7 +35,7 @@ class cpu
 		unsigned char getV( int index );
 		void setV( int index, unsigned char value );
 
-		unsigned short popStatck();
+		unsigned short popStack();
 		void pushStack( unsigned short value );
 
 	private:

@@ -8,6 +8,7 @@
 #include <map>
 #include <string>
 #include <iostream>
+#include <stdlib.h>
 
 // Forward declaration
 class cpu;
