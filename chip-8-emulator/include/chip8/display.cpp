@@ -25,14 +25,14 @@ display::~display()
 void display::drawPixel( int x, int y, SDL_Renderer* renderer)
 {
 	// Sanity check
-	if ( ( x > EM_WIDTH - 1 || y > EM_HEIGHT - 1 ) || ( x < 0 || y < 0 ) )
+	if ( ( x > c8_display::EM_WIDTH - 1 || y > c8_display::EM_HEIGHT - 1 ) || ( x < 0 || y < 0 ) )
 		cerr << "Rendering error, drawing offscreen at coordinates " << x << ", " << y << endl;
 
-	int ratioW = SCREEN_WIDTH / EM_WIDTH;
-	int ratioH = SCREEN_HEIGHT / EM_HEIGHT;
+	int ratioW = SCREEN_WIDTH / c8_display::EM_WIDTH;
+	int ratioH = SCREEN_HEIGHT / c8_display::EM_HEIGHT;
 
 	SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
-	SDL_Rect rect = { x * ratioW, y * ratioH, SCREEN_WIDTH / EM_WIDTH, SCREEN_HEIGHT / EM_HEIGHT };
+	SDL_Rect rect = { x * ratioW, y * ratioH, SCREEN_WIDTH / c8_display::EM_WIDTH, SCREEN_HEIGHT / c8_display::EM_HEIGHT };
 	SDL_RenderFillRect(renderer, &rect);
 }
 
@@ -95,7 +95,8 @@ bool display::initialiseDisplay()
  */
 void display::clear()
 {
-	memset(gfx, 0, sizeof(gfx));
+	memset(gfx, 0x00000000, sizeof(gfx));
+
 }
 
 
@@ -109,15 +110,31 @@ void display::doUpdate()
 	SDL_RenderClear( gRenderer );
 
 	// Draw GFX array to screen
-	for (int i = 0; i < EM_WIDTH; i++)
+	for (int i = 0; i < c8_display::EM_WIDTH; i++)
 	{
-		for (int j = 0; j < EM_HEIGHT; j++)
+		for (int j = 0; j < c8_display::EM_HEIGHT; j++)
 		{
-			if (gfx[ EM_WIDTH * j + i] == 1)
+			if (gfx[ c8_display::EM_WIDTH * j + i] == 0xFFFFFFFF)
 				drawPixel(i, j, gRenderer);
 		}
 	}
 
 	// Updates display
 	SDL_RenderPresent( gRenderer );
+}
+
+/**
+ * @brief		Dumps memory to a human readable text file
+ */
+void display::dump_memory()
+{
+	std::cerr << "Dumping memory to path: bin/gfx_dump" << std::endl; 
+	std::ofstream mem_dump("bin/gfx_dump", std::ios::binary );
+
+	for (unsigned int i : gfx)
+	{
+		mem_dump << std::hex << i;
+	}
+
+	mem_dump.close();
 }

@@ -5,18 +5,23 @@
 #include "opcodes.hpp"
 #include "decoder.hpp"
 
+
 class opcode;
 
 class cpu
 {
 
 	public:
-		cpu(unsigned char (&g)[64*32]);
+		cpu(unsigned int (&g)[64*32]);
 		~cpu();
 
-		unsigned char* gfx;							// GFX memory buffer (stored in display class)
+		unsigned int* gfx;							// GFX memory buffer (stored in display class)
 		memory mem = memory();
+		
+		// Flags
 		bool drawFlag;
+		bool dumpGFX = false;
+		bool dumpMem = false;
 		bool clearScreen;
 
 		void cycle();								// Contains function calls to complete 1 cycle

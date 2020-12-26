@@ -60,9 +60,5 @@ void decoder::loadMem()
 		index++;
 	}
 
-	// TODO: Remove after debugging
-	// Check that memory is initialised correctly
-	mem->dump_memory();
-
 	cerr << "Successfully loaded game into memory..." << endl;
 }

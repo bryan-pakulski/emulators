@@ -421,6 +421,7 @@ void opcode::op8XY4()
 		proc->setV(0xF, 0);
 
 	proc->setV(x, sum & 0xFF);
+	proc->incrementPC(1);
 }
 
 
@@ -441,6 +442,7 @@ void opcode::op8XY5()
 		proc->setV(0xF, 0);
 
 	proc->setV(x, proc->getV(x) - proc->getV(y));
+	proc->incrementPC(1);
 
 }
 
@@ -455,6 +457,8 @@ void opcode::op8XY6()
 	// Get least significant bit
 	proc->setV(0xF, proc->getV(x) & 0x1);
 	proc->setV(x, proc->getV(x) >> 1);
+	proc->incrementPC(1);
+
 }
 
 /**
@@ -472,6 +476,8 @@ void opcode::op8XY7()
 		proc->setV(0xF, 1);
 
 	proc->setV(x, proc->getV(y) - proc->getV(x));
+	proc->incrementPC(1);
+
 }
 
 /**
@@ -480,7 +486,7 @@ void opcode::op8XY7()
  */
 void opcode::op8XYE()
 {
-	
+	proc->incrementPC(1);
 }
 
 /**
@@ -492,6 +498,8 @@ void opcode::op9XY0()
 	int y = (int) ( proc->getOP() & 0x00F0 );
 
 	if ( proc->getV(x) != proc->getV(y) )
+		proc->incrementPC(2);
+	else
 		proc->incrementPC(1);
 }
 
@@ -503,6 +511,7 @@ void opcode::op9XY0()
 void opcode::opANNN()
 {
 	proc->setI( proc->getOP() & 0x0FFF );
+	proc->incrementPC(1);
 }
 
 /**
@@ -526,21 +535,52 @@ void opcode::opCXNN()
 	// TODO: generate random byte in the following format
 	int r = ((rand() % (0xF + 1 - 0x0)) + 0x0);
 	proc->setV(x, r & v_nn);
+	proc->incrementPC(1);
 }
 
 /**
- * @brief      Sprites stored in memory at location in index register (I),
+ * @brief      			 Sprites stored in memory at location in index register (I),
  *						 8bits wide. Wraps around the screen. If when 
  *						 drawn, clears a pixel, register VF is set to 1 otherwise it is
- *						 zero. All drawing is XOR drawing
- *						 (i.e. it toggles the screen pixels). Sprites are drawn starting
- *						 at position VX, VY. N is the number of 8bit rowsthat need to be
- *						 drawn. If N is greater than 1, second line continues at position
- *						 VX, VY+1, and so on
+ *						 zero. All drawing is XOR drawing (i.e. it toggles the screen pixels).
+ *						 Sprites are drawn starting at position VX, VY. N is the number of 8bit 
+ *						 rows that need to be drawn. If N is greater than 1,
+ *						 second line continues at position VX, VY+1, and so on
  */
 void opcode::opDXYN()
 {
+	unsigned char x = (proc->getOP() & 0x0F00) >> 8;
+	unsigned char y = (proc->getOP() & 0x00F0) >> 4;
 
+	// Wrap if going beyond screen boundaries
+	int xPos = proc->getV(x) % c8_display::EM_WIDTH; 
+	int yPos = proc->getV(y) % c8_display::EM_HEIGHT;
+
+	proc->setV(0xF, 0);
+
+	// Iterate over display
+	for (int row = 0; row < c8_display::EM_HEIGHT; ++row)
+	{
+		uint8_t sprite = proc->mem.get(proc->getI() + row);
+
+		for (int col = 0; col < 8; ++col)
+		{
+			int spritePixel = sprite & (0x80 >> col);
+			int gfx_index = proc->gfx[(yPos + row) * c8_display::EM_WIDTH + (xPos + col)];
+
+			if (spritePixel)
+			{	
+				// Check collision
+				if (proc->gfx[gfx_index] == 0xFFFFFFFF)
+					proc->setV(0xF, 1);
+				
+				proc->gfx[gfx_index] ^= 0xFFFFFFFF;
+			}
+		}
+	}
+	
+	proc->drawFlag = true;
+	proc->incrementPC(1);
 }
 
 /**
@@ -548,7 +588,7 @@ void opcode::opDXYN()
  */
 void opcode::opEX9E()
 {
-
+	proc->incrementPC(1);
 }
 
 
@@ -558,7 +598,7 @@ void opcode::opEX9E()
  */
 void opcode::opEXA1()
 {
-
+	proc->incrementPC(1);
 }
 
 /**
@@ -566,7 +606,7 @@ void opcode::opEXA1()
  */
 void opcode::opFX07()
 {
-
+	proc->incrementPC(1);
 }
 
 /**
@@ -574,7 +614,7 @@ void opcode::opFX07()
  */
 void opcode::opFX0A()
 {
-
+	proc->incrementPC(1);
 }
 
 /**
@@ -582,7 +622,7 @@ void opcode::opFX0A()
  */
 void opcode::opFX15()
 {
-
+	proc->incrementPC(1);
 }
 
 /**
@@ -590,7 +630,7 @@ void opcode::opFX15()
  */
 void opcode::opFX18()
 {
-
+	proc->incrementPC(1);
 }
 
 
@@ -600,7 +640,11 @@ void opcode::opFX18()
  */
 void opcode::opFX1E()
 {
+	int x = (proc->getOP() & 0x0F00) >> 8;
 
+	proc->setI(proc->getI() + x);
+
+	proc->incrementPC(1);
 }
 
 /**
@@ -609,7 +653,7 @@ void opcode::opFX1E()
  */
 void opcode::opFX29()
 {
-
+	proc->incrementPC(1);
 }
 
 /**
@@ -623,7 +667,7 @@ void opcode::opFX29()
  */
 void opcode::opFX33()
 {
- 
+	proc->incrementPC(1);
 }
 
 /**
@@ -631,7 +675,12 @@ void opcode::opFX33()
  */
 void opcode::opFX55()
 {
+	int x = (proc->getOP() & 0x0F00) >> 8;
 
+	for (int i = 0; i < x; i++)
+		proc->mem.set( proc->getI() + i, proc->getV(x) );
+
+	proc->incrementPC(1);
 }
 
 /**
@@ -639,5 +688,10 @@ void opcode::opFX55()
  */
 void opcode::opFX65()
 {
+	int x = (proc->getOP() & 0x0F00) >> 8;
 
+	for (int i = 0; i < x; i++)
+		proc->setV( i, proc->mem.get(proc->getI() + i) );
+
+	proc->incrementPC(1);
 }

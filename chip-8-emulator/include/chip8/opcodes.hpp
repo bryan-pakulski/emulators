@@ -29,15 +29,13 @@ public:
 private:
 	// Opcode functions need access to memory and other values that the cpu uses
 	// This is done via this class pointer
-	// This is also the case for the display which is passed through via the gfx buffer
 	cpu *proc;
-	display *gfx;
 
 	std::map< int, void(opcode::*)() > oplist = {
 		{ 0,  &opcode::op0NNN }, { 1,  &opcode::op00E0 }, { 2,  &opcode::op00EE },
 		{ 3,  &opcode::op1NNN }, { 4,  &opcode::op2NNN },
 
-		{ 4,  &opcode::op3XNN }, { 6,  &opcode::op4XNN }, { 7,  &opcode::op5XY0 },
+		{ 5,  &opcode::op3XNN }, { 6,  &opcode::op4XNN }, { 7,  &opcode::op5XY0 },
 		{ 8,  &opcode::op6XNN }, { 9,  &opcode::op7XNN },
 
 		{ 10,  &opcode::op8XY0 }, { 11,  &opcode::op8XY1 }, { 12,  &opcode::op8XY2 },

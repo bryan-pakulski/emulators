@@ -35,6 +35,23 @@ void chip8::gameloop()
 {
 	while (running)
 	{
+
+		// DEBUG dumps //
+
+		// If gfx dump flag is set dump gfx memory
+		if (cp->dumpGFX)
+		{
+			screen->dump_memory();
+			cp->dumpGFX = !cp->dumpGFX;
+		}
+
+		// If mem dump flag is set dump cpu memory
+		if (cp->dumpMem)
+		{
+			cp->mem.dump_memory();
+			cp->dumpMem = !cp->dumpMem;
+		}
+		
 		// Get events from queue and get keypad input
 		while ( SDL_PollEvent( &e ) != 0 )
 		{
