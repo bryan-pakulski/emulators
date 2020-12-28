@@ -34,11 +34,9 @@ void opcode::execute( unsigned short o )
 		}
 	}
 
-	//if (decode(o) != -1)
-	//{
-		auto f = oplist[instruction];
-		(*this.*f)();
-	//}
+	// Run instruction from opcode lookup table
+	auto f = oplist[instruction];
+	(*this.*f)();
 	
 }
 
@@ -486,6 +484,12 @@ void opcode::op8XY7()
  */
 void opcode::op8XYE()
 {
+	uint8_t x = (proc->getOP() & 0x0F00) >> 8;
+	uint8_t y = (proc->getOP() & 0x00F0) >> 4;
+
+	proc->setV(0xF, (proc->getV(x) & 0x80) >> 7 );
+	proc->setV(x, proc->getV(x) << 1);
+
 	proc->incrementPC(1);
 }
 

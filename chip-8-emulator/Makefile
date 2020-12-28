@@ -90,6 +90,9 @@ test:
 	mv "$(EXECUTABLE)_test" $(TST)
 	$(TERM) $(TERMARGS) "./$(TST)/$(EXECUTABLE)_test $(EXECUTABLE_ARGUMENTS)"
 
+mem_check:
+	valgrind --tool=memcheck --leak-check=yes --track-origins=yes $(BIN)/$(EXECUTABLE) $(EXECUTABLE_ARGUMENTS)
+
 # Generate documentation
 doc:
 	doxygen Doxyfile
