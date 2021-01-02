@@ -610,6 +610,10 @@ void opcode::opEXA1()
  */
 void opcode::opFX07()
 {
+	uint8_t x = (proc->getOP() & 0x0F00) >> 8;
+
+	proc->setV(x, proc->delay_timer);
+
 	proc->incrementPC(1);
 }
 
@@ -626,6 +630,10 @@ void opcode::opFX0A()
  */
 void opcode::opFX15()
 {
+	uint8_t x = (proc->getOP() & 0x0F00) >> 8;
+
+	proc->delay_timer = proc->getV(x);
+
 	proc->incrementPC(1);
 }
 
@@ -634,6 +642,10 @@ void opcode::opFX15()
  */
 void opcode::opFX18()
 {
+	uint8_t x = (proc->getOP() & 0x0F00) >> 8;
+
+	proc->sound_timer = proc->getV(x);
+
 	proc->incrementPC(1);
 }
 

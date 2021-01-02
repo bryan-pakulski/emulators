@@ -19,6 +19,8 @@ class cpu
 		memory mem = memory();
 		
 		// Flags
+		unsigned short delay_timer = 0x0;
+		unsigned short sound_timer = 0x0;
 		bool drawFlag;
 		bool dumpGFX = false;
 		bool dumpMem = false;
