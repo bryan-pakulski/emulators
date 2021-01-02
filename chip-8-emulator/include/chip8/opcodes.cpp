@@ -271,7 +271,7 @@ void opcode::op00EE(unsigned short op)
  */
 void opcode::op1NNN(unsigned short op)
 {
-	proc->setPC( proc->getOP() & 0x0FFF );
+	proc->setPC( op & 0x0FFF );
 }
 
 /**
@@ -280,7 +280,7 @@ void opcode::op1NNN(unsigned short op)
 void opcode::op2NNN(unsigned short op)
 {
 	proc->pushStack( proc->getPC() );
-	proc->setPC( proc->getOP() & 0x0FFF );
+	proc->setPC( op & 0x0FFF );
 }
 
 
@@ -290,8 +290,8 @@ void opcode::op2NNN(unsigned short op)
  */
 void opcode::op3XNN(unsigned short op)
 {
-	int x = (int) (proc->getOP() & 0x0F00);
-	int n = (int) (proc->getOP() & 0x00FF);
+	int x = (int) (op & 0x0F00);
+	int n = (int) (op & 0x00FF);
 
 	if ( proc->getV( x ) == n )
 		proc->incrementPC(2);
@@ -304,8 +304,8 @@ void opcode::op3XNN(unsigned short op)
  */
 void opcode::op4XNN(unsigned short op)
 {
-	int x = (int) (proc->getOP() & 0x0F00);
-	int n = (int) (proc->getOP() & 0x00FF);
+	int x = (int) (op & 0x0F00);
+	int n = (int) (op & 0x00FF);
 
 	if ( proc->getV( x ) != n )
 		proc->incrementPC(2);
@@ -318,8 +318,8 @@ void opcode::op4XNN(unsigned short op)
  */
 void opcode::op5XY0(unsigned short op)
 {
-	int x = (int) (proc->getOP() & 0x0F00);
-	int y = (int) (proc->getOP() & 0x00F0);
+	int x = (int) (op & 0x0F00);
+	int y = (int) (op & 0x00F0);
 
 	if ( proc->getV(x) == proc->getV(y) )
 		proc->incrementPC(2);
@@ -332,8 +332,8 @@ void opcode::op5XY0(unsigned short op)
  */
 void opcode::op6XNN(unsigned short op)
 {
-	int x = (int) (proc->getOP() & 0x0F00);
-	unsigned char n = (proc->getOP() & 0x00FF);
+	int x = (int) (op & 0x0F00);
+	unsigned char n = (op & 0x00FF);
 
 	proc->setV(x, n);
 	proc->incrementPC(1);
@@ -344,8 +344,8 @@ void opcode::op6XNN(unsigned short op)
  */
 void opcode::op7XNN(unsigned short op)
 {
-	int x = (int) (proc->getOP() & 0x0F00);
-	unsigned char n = (proc->getOP() & 0x00FF);
+	int x = (int) (op & 0x0F00);
+	unsigned char n = (op & 0x00FF);
 
 	proc->setV( x, ( proc->getV(x) + n ) );
 	proc->incrementPC(1);
@@ -358,8 +358,8 @@ void opcode::op7XNN(unsigned short op)
  */
 void opcode::op8XY0(unsigned short op)
 {
-	int x = (int) (proc->getOP() & 0x0F00);
-	int y = (int) (proc->getOP() & 0x00F0);
+	int x = (int) (op & 0x0F00);
+	int y = (int) (op & 0x00F0);
 
 	proc->setV( x, proc->getV( y ) );
 	proc->incrementPC(1);
@@ -370,8 +370,8 @@ void opcode::op8XY0(unsigned short op)
  */
 void opcode::op8XY1(unsigned short op)
 {
-	int x = (int) (proc->getOP() & 0x0F00);
-	int y = (int) (proc->getOP() & 0x00F0);
+	int x = (int) (op & 0x0F00);
+	int y = (int) (op & 0x00F0);
 
 	proc->setV( x, ( proc->getV(x) | proc->getV(y) ) );
 	proc->incrementPC(1);
@@ -382,8 +382,8 @@ void opcode::op8XY1(unsigned short op)
  */
 void opcode::op8XY2(unsigned short op)
 {
-	int x = (int) (proc->getOP() & 0x0F00);
-	int y = (int) (proc->getOP() & 0x00F0);
+	int x = (int) (op & 0x0F00);
+	int y = (int) (op & 0x00F0);
 
 	proc->setV( x, ( proc->getV(x) & proc->getV(y) ) );
 	proc->incrementPC(1);
@@ -394,8 +394,8 @@ void opcode::op8XY2(unsigned short op)
  */
 void opcode::op8XY3(unsigned short op)
 {
-	int x = (int) (proc->getOP() & 0x0F00);
-	int y = (int) (proc->getOP() & 0x00F0);
+	int x = (int) (op & 0x0F00);
+	int y = (int) (op & 0x00F0);
 
 	proc->setV( x, ( proc->getV(x) ^ proc->getV(y) ) );
 	proc->incrementPC(1);
@@ -408,8 +408,8 @@ void opcode::op8XY3(unsigned short op)
 void opcode::op8XY4(unsigned short op)
 {
 	// Get X, Y values and shift right
-	int x = (int) (proc->getOP() & 0x0F00) >> 8;
-	int y = (int) (proc->getOP() & 0x00F0) >> 4;
+	int x = (int) (op & 0x0F00) >> 8;
+	int y = (int) (op & 0x00F0) >> 4;
 
 	uint16_t sum = proc->getV(x) + proc->getV(y);
 
@@ -431,8 +431,8 @@ void opcode::op8XY4(unsigned short op)
 void opcode::op8XY5(unsigned short op)
 {
 	// Get X, Y values and shift right
-	int x = (int) (proc->getOP() & 0x0F00) >> 8;
-	int y = (int) (proc->getOP() & 0x00F0) >> 4;
+	int x = (int) (op & 0x0F00) >> 8;
+	int y = (int) (op & 0x00F0) >> 4;
 
 	if (proc->getV(x) > proc->getV(y))
 		proc->setV(0xF, 1);
@@ -450,7 +450,7 @@ void opcode::op8XY5(unsigned short op)
  */
 void opcode::op8XY6(unsigned short op)
 {
-	uint8_t x = (proc->getOP() & 0x0F00) >> 8;
+	uint8_t x = (op & 0x0F00) >> 8;
 
 	// Get least significant bit
 	proc->setV(0xF, proc->getV(x) & 0x1);
@@ -465,8 +465,8 @@ void opcode::op8XY6(unsigned short op)
  */
 void opcode::op8XY7(unsigned short op)
 {
-	uint8_t x = (proc->getOP() & 0x0F00) >> 8;
-	uint8_t y = (proc->getOP() & 0x00F0) >> 4;
+	uint8_t x = (op & 0x0F00) >> 8;
+	uint8_t y = (op & 0x00F0) >> 4;
 	
 	if (proc->getV(y) > proc->getV(x))
 		proc->setV(0xF, 0);
@@ -484,8 +484,8 @@ void opcode::op8XY7(unsigned short op)
  */
 void opcode::op8XYE(unsigned short op)
 {
-	uint8_t x = (proc->getOP() & 0x0F00) >> 8;
-	uint8_t y = (proc->getOP() & 0x00F0) >> 4;
+	uint8_t x = (op & 0x0F00) >> 8;
+	uint8_t y = (op & 0x00F0) >> 4;
 
 	proc->setV(0xF, (proc->getV(x) & 0x80) >> 7 );
 	proc->setV(x, proc->getV(x) << 1);
@@ -498,8 +498,8 @@ void opcode::op8XYE(unsigned short op)
  */
 void opcode::op9XY0(unsigned short op)
 {
-	int x = (int) ( proc->getOP() & 0x0F00 );
-	int y = (int) ( proc->getOP() & 0x00F0 );
+	int x = (int) ( op & 0x0F00 );
+	int y = (int) ( op & 0x00F0 );
 
 	if ( proc->getV(x) != proc->getV(y) )
 		proc->incrementPC(2);
@@ -514,7 +514,7 @@ void opcode::op9XY0(unsigned short op)
  */
 void opcode::opANNN(unsigned short op)
 {
-	proc->setI( proc->getOP() & 0x0FFF );
+	proc->setI( op & 0x0FFF );
 	proc->incrementPC(1);
 }
 
@@ -523,7 +523,7 @@ void opcode::opANNN(unsigned short op)
  */
 void opcode::opBNNN(unsigned short op)
 {
-	proc->setPC( (proc->getOP() & 0x0FFF) + proc->getV(0) );
+	proc->setPC( (op & 0x0FFF) + proc->getV(0) );
 }
 
 /**
@@ -532,8 +532,8 @@ void opcode::opBNNN(unsigned short op)
  */
 void opcode::opCXNN(unsigned short op)
 {
-	unsigned char x = (proc->getOP() & 0x0F00) >> 8;
-	unsigned char v_nn = proc->getOP() & 0x00FF;
+	unsigned char x = (op & 0x0F00) >> 8;
+	unsigned char v_nn = op & 0x00FF;
 
 	
 	// TODO: generate random byte in the following format
@@ -553,8 +553,8 @@ void opcode::opCXNN(unsigned short op)
  */
 void opcode::opDXYN(unsigned short op)
 {
-	unsigned char x = (proc->getOP() & 0x0F00) >> 8;
-	unsigned char y = (proc->getOP() & 0x00F0) >> 4;
+	unsigned char x = (op & 0x0F00) >> 8;
+	unsigned char y = (op & 0x00F0) >> 4;
 
 	// Wrap if going beyond screen boundaries
 	int xPos = proc->getV(x) % c8_display::EM_WIDTH; 
@@ -610,7 +610,7 @@ void opcode::opEXA1(unsigned short op)
  */
 void opcode::opFX07(unsigned short op)
 {
-	uint8_t x = (proc->getOP() & 0x0F00) >> 8;
+	uint8_t x = (op & 0x0F00) >> 8;
 
 	proc->setV(x, proc->delay_timer);
 
@@ -630,7 +630,7 @@ void opcode::opFX0A(unsigned short op)
  */
 void opcode::opFX15(unsigned short op)
 {
-	uint8_t x = (proc->getOP() & 0x0F00) >> 8;
+	uint8_t x = (op & 0x0F00) >> 8;
 
 	proc->delay_timer = proc->getV(x);
 
@@ -642,7 +642,7 @@ void opcode::opFX15(unsigned short op)
  */
 void opcode::opFX18(unsigned short op)
 {
-	uint8_t x = (proc->getOP() & 0x0F00) >> 8;
+	uint8_t x = (op & 0x0F00) >> 8;
 
 	proc->sound_timer = proc->getV(x);
 
@@ -656,7 +656,7 @@ void opcode::opFX18(unsigned short op)
  */
 void opcode::opFX1E(unsigned short op)
 {
-	int x = (proc->getOP() & 0x0F00) >> 8;
+	int x = (op & 0x0F00) >> 8;
 
 	proc->setI(proc->getI() + x);
 
@@ -691,7 +691,7 @@ void opcode::opFX33(unsigned short op)
  */
 void opcode::opFX55(unsigned short op)
 {
-	int x = (proc->getOP() & 0x0F00) >> 8;
+	int x = (op & 0x0F00) >> 8;
 
 	for (int i = 0; i < x; i++)
 		proc->mem.set( proc->getI() + i, proc->getV(x) );
@@ -704,7 +704,7 @@ void opcode::opFX55(unsigned short op)
  */
 void opcode::opFX65(unsigned short op)
 {
-	int x = (proc->getOP() & 0x0F00) >> 8;
+	int x = (op & 0x0F00) >> 8;
 
 	for (int i = 0; i < x; i++)
 		proc->setV( i, proc->mem.get(proc->getI() + i) );
