@@ -34,9 +34,9 @@ void opcode::execute( unsigned short o )
 		}
 	}
 
-	// Run instruction from opcode lookup table
+	// Run instruction from opcode lookup table, passes along current opcode operation
 	auto f = oplist[instruction];
-	(*this.*f)();
+	(*this.*f)(proc->getOP());
 	
 }
 
@@ -244,7 +244,7 @@ int opcode::decode( unsigned short o )
  * @brief      Calls RCA 1802 program at address NNN.
  * 						 Not necessary for most ROMs
  */
-void opcode::op0NNN()
+void opcode::op0NNN(unsigned short op)
 {
 	
 }
@@ -252,7 +252,7 @@ void opcode::op0NNN()
 /**
  * @brief      Clears the screen
  */
-void opcode::op00E0()
+void opcode::op00E0(unsigned short op)
 {
 	proc->clearScreen = true;
 	proc->incrementPC(1);
@@ -261,7 +261,7 @@ void opcode::op00E0()
 /**
  * @brief      Returns from a subroutine
  */
-void opcode::op00EE()
+void opcode::op00EE(unsigned short op)
 {
 	proc->setPC(proc->popStack());
 }
@@ -269,7 +269,7 @@ void opcode::op00EE()
 /**
  * @brief      Jumps to address NNN
  */
-void opcode::op1NNN()
+void opcode::op1NNN(unsigned short op)
 {
 	proc->setPC( proc->getOP() & 0x0FFF );
 }
@@ -277,7 +277,7 @@ void opcode::op1NNN()
 /**
  * @brief      Calls subroutine at NNN
  */
-void opcode::op2NNN()
+void opcode::op2NNN(unsigned short op)
 {
 	proc->pushStack( proc->getPC() );
 	proc->setPC( proc->getOP() & 0x0FFF );
@@ -288,7 +288,7 @@ void opcode::op2NNN()
 /**
  * @brief      Skips the next instruction if VX equals NN
  */
-void opcode::op3XNN()
+void opcode::op3XNN(unsigned short op)
 {
 	int x = (int) (proc->getOP() & 0x0F00);
 	int n = (int) (proc->getOP() & 0x00FF);
@@ -302,7 +302,7 @@ void opcode::op3XNN()
 /**
  * @brief      Skips the next instruction if VX doesn't equal NN
  */
-void opcode::op4XNN()
+void opcode::op4XNN(unsigned short op)
 {
 	int x = (int) (proc->getOP() & 0x0F00);
 	int n = (int) (proc->getOP() & 0x00FF);
@@ -316,7 +316,7 @@ void opcode::op4XNN()
 /**
  * @brief      Skips the next instruction if VX equals VY
  */
-void opcode::op5XY0()
+void opcode::op5XY0(unsigned short op)
 {
 	int x = (int) (proc->getOP() & 0x0F00);
 	int y = (int) (proc->getOP() & 0x00F0);
@@ -330,7 +330,7 @@ void opcode::op5XY0()
 /**
  * @brief      Sets VX to NN
  */
-void opcode::op6XNN()
+void opcode::op6XNN(unsigned short op)
 {
 	int x = (int) (proc->getOP() & 0x0F00);
 	unsigned char n = (proc->getOP() & 0x00FF);
@@ -342,7 +342,7 @@ void opcode::op6XNN()
 /**
  * @brief      Adds NN to VX
  */
-void opcode::op7XNN()
+void opcode::op7XNN(unsigned short op)
 {
 	int x = (int) (proc->getOP() & 0x0F00);
 	unsigned char n = (proc->getOP() & 0x00FF);
@@ -356,7 +356,7 @@ void opcode::op7XNN()
 /**
  * @brief      Sets VX to the value of VY
  */
-void opcode::op8XY0()
+void opcode::op8XY0(unsigned short op)
 {
 	int x = (int) (proc->getOP() & 0x0F00);
 	int y = (int) (proc->getOP() & 0x00F0);
@@ -368,7 +368,7 @@ void opcode::op8XY0()
 /**
  * @brief      Sets VX to VX or VY
  */
-void opcode::op8XY1()
+void opcode::op8XY1(unsigned short op)
 {
 	int x = (int) (proc->getOP() & 0x0F00);
 	int y = (int) (proc->getOP() & 0x00F0);
@@ -380,7 +380,7 @@ void opcode::op8XY1()
 /**
  * @brief      Sets VX to VX and VY
  */
-void opcode::op8XY2()
+void opcode::op8XY2(unsigned short op)
 {
 	int x = (int) (proc->getOP() & 0x0F00);
 	int y = (int) (proc->getOP() & 0x00F0);
@@ -392,7 +392,7 @@ void opcode::op8XY2()
 /**
  * @brief      Sets VX to VX xor VY
  */
-void opcode::op8XY3()
+void opcode::op8XY3(unsigned short op)
 {
 	int x = (int) (proc->getOP() & 0x0F00);
 	int y = (int) (proc->getOP() & 0x00F0);
@@ -405,7 +405,7 @@ void opcode::op8XY3()
  * @brief     Adds VY to VX. VF is set to 1 when there's a carry,
  * 						and to 0 when there isn't
  */
-void opcode::op8XY4()
+void opcode::op8XY4(unsigned short op)
 {
 	// Get X, Y values and shift right
 	int x = (int) (proc->getOP() & 0x0F00) >> 8;
@@ -428,7 +428,7 @@ void opcode::op8XY4()
  * @brief      VY is subtracted from VX. VF is set to 0 when there's a 
  * 						 borrow, and 1 when there isn't
  */
-void opcode::op8XY5()
+void opcode::op8XY5(unsigned short op)
 {
 	// Get X, Y values and shift right
 	int x = (int) (proc->getOP() & 0x0F00) >> 8;
@@ -448,7 +448,7 @@ void opcode::op8XY5()
  * @brief      Shifts VX right by one. VF is set to the value
  * 						 of the least significant bit of VX before the shift
  */
-void opcode::op8XY6()
+void opcode::op8XY6(unsigned short op)
 {
 	uint8_t x = (proc->getOP() & 0x0F00) >> 8;
 
@@ -463,7 +463,7 @@ void opcode::op8XY6()
  * @brief      Sets VX to VY minus VX. VF is set to 0 when there's a borrow,
  * 						 and 1 when there isn't
  */
-void opcode::op8XY7()
+void opcode::op8XY7(unsigned short op)
 {
 	uint8_t x = (proc->getOP() & 0x0F00) >> 8;
 	uint8_t y = (proc->getOP() & 0x00F0) >> 4;
@@ -482,7 +482,7 @@ void opcode::op8XY7()
  * @brief      Shifts VX left by one.VF is set to the value of the
  * 						 most significant bit of VX before the shift
  */
-void opcode::op8XYE()
+void opcode::op8XYE(unsigned short op)
 {
 	uint8_t x = (proc->getOP() & 0x0F00) >> 8;
 	uint8_t y = (proc->getOP() & 0x00F0) >> 4;
@@ -496,7 +496,7 @@ void opcode::op8XYE()
 /**
  * @brief      Skips the next instruction if VX doesn't equal VY
  */
-void opcode::op9XY0()
+void opcode::op9XY0(unsigned short op)
 {
 	int x = (int) ( proc->getOP() & 0x0F00 );
 	int y = (int) ( proc->getOP() & 0x00F0 );
@@ -512,7 +512,7 @@ void opcode::op9XY0()
 /**
  * @brief      Sets I to the address NNN
  */
-void opcode::opANNN()
+void opcode::opANNN(unsigned short op)
 {
 	proc->setI( proc->getOP() & 0x0FFF );
 	proc->incrementPC(1);
@@ -521,7 +521,7 @@ void opcode::opANNN()
 /**
  * @brief      Jumps to the address NNN plus V0
  */
-void opcode::opBNNN()
+void opcode::opBNNN(unsigned short op)
 {
 	proc->setPC( (proc->getOP() & 0x0FFF) + proc->getV(0) );
 }
@@ -530,7 +530,7 @@ void opcode::opBNNN()
  * @brief      Sets VX to the result of a bitwise and
  * 						 operation on a random number and NN
  */
-void opcode::opCXNN()
+void opcode::opCXNN(unsigned short op)
 {
 	unsigned char x = (proc->getOP() & 0x0F00) >> 8;
 	unsigned char v_nn = proc->getOP() & 0x00FF;
@@ -551,7 +551,7 @@ void opcode::opCXNN()
  *						 rows that need to be drawn. If N is greater than 1,
  *						 second line continues at position VX, VY+1, and so on
  */
-void opcode::opDXYN()
+void opcode::opDXYN(unsigned short op)
 {
 	unsigned char x = (proc->getOP() & 0x0F00) >> 8;
 	unsigned char y = (proc->getOP() & 0x00F0) >> 4;
@@ -590,7 +590,7 @@ void opcode::opDXYN()
 /**
  * @brief      Skips the next instruction if the key stored in VX is pressed
  */
-void opcode::opEX9E()
+void opcode::opEX9E(unsigned short op)
 {
 	proc->incrementPC(1);
 }
@@ -600,7 +600,7 @@ void opcode::opEX9E()
 /**
  * @brief      Skips the next instruction if the key stored in VX isn't pressed
  */
-void opcode::opEXA1()
+void opcode::opEXA1(unsigned short op)
 {
 	proc->incrementPC(1);
 }
@@ -608,7 +608,7 @@ void opcode::opEXA1()
 /**
  * @brief      Sets VX to the value of the delay timer
  */
-void opcode::opFX07()
+void opcode::opFX07(unsigned short op)
 {
 	uint8_t x = (proc->getOP() & 0x0F00) >> 8;
 
@@ -620,7 +620,7 @@ void opcode::opFX07()
 /**
  * @brief      A key press is awaited, and then stored in VX
  */
-void opcode::opFX0A()
+void opcode::opFX0A(unsigned short op)
 {
 	proc->incrementPC(1);
 }
@@ -628,7 +628,7 @@ void opcode::opFX0A()
 /**
  * @brief      Sets the delay timer to VX
  */
-void opcode::opFX15()
+void opcode::opFX15(unsigned short op)
 {
 	uint8_t x = (proc->getOP() & 0x0F00) >> 8;
 
@@ -640,7 +640,7 @@ void opcode::opFX15()
 /**
  * @brief      Sets the sound timer to VX
  */
-void opcode::opFX18()
+void opcode::opFX18(unsigned short op)
 {
 	uint8_t x = (proc->getOP() & 0x0F00) >> 8;
 
@@ -654,7 +654,7 @@ void opcode::opFX18()
 /**
  * @brief      Adds VX to I
  */
-void opcode::opFX1E()
+void opcode::opFX1E(unsigned short op)
 {
 	int x = (proc->getOP() & 0x0F00) >> 8;
 
@@ -667,7 +667,7 @@ void opcode::opFX1E()
  * @brief      Sets I to the location of the sprite for the character in VX.
  *  					 Characters 0-F (in hexadecimal) are represented by a 4x5 font
  */
-void opcode::opFX29()
+void opcode::opFX29(unsigned short op)
 {
 	proc->incrementPC(1);
 }
@@ -681,7 +681,7 @@ void opcode::opFX29()
  * 						 the tens digit at location I+1,
  * 						 and the ones digit at location I+2)
  */
-void opcode::opFX33()
+void opcode::opFX33(unsigned short op)
 {
 	proc->incrementPC(1);
 }
@@ -689,7 +689,7 @@ void opcode::opFX33()
 /**
  * @brief      Stores V0 to VX in memory starting at address I
  */
-void opcode::opFX55()
+void opcode::opFX55(unsigned short op)
 {
 	int x = (proc->getOP() & 0x0F00) >> 8;
 
@@ -702,7 +702,7 @@ void opcode::opFX55()
 /**
  * @brief      Fills V0 to VX with values from memory starting at address I
  */
-void opcode::opFX65()
+void opcode::opFX65(unsigned short op)
 {
 	int x = (proc->getOP() & 0x0F00) >> 8;
 

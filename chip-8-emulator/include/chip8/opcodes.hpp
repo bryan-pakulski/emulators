@@ -13,7 +13,7 @@
 // Forward declaration
 class cpu;
 
-typedef void(*func_p)(void);
+typedef void(*func_p)(unsigned short);
 
 class opcode
 {
@@ -31,7 +31,7 @@ private:
 	// This is done via this class pointer
 	cpu *proc;
 
-	std::map< int, void(opcode::*)() > oplist = {
+	std::map< int, void(opcode::*)(unsigned short) > oplist = {
 		{ 0,  &opcode::op0NNN }, { 1,  &opcode::op00E0 }, { 2,  &opcode::op00EE },
 		{ 3,  &opcode::op1NNN }, { 4,  &opcode::op2NNN },
 
@@ -59,47 +59,47 @@ private:
 	std::map< unsigned short, int > optable = {};
 
 	// See wikipedia for list of opcode instructions
-	void op0NNN();
-	void op00E0();
-	void op00EE();
-	void op1NNN();
-	void op2NNN();
+	void op0NNN(unsigned short);
+	void op00E0(unsigned short);
+	void op00EE(unsigned short);
+	void op1NNN(unsigned short);
+	void op2NNN(unsigned short);
 
-	void op3XNN();
-	void op4XNN();
-	void op5XY0();
-	void op6XNN();
-	void op7XNN();
+	void op3XNN(unsigned short);
+	void op4XNN(unsigned short);
+	void op5XY0(unsigned short);
+	void op6XNN(unsigned short);
+	void op7XNN(unsigned short);
 
-	void op8XY0();
-	void op8XY1();
-	void op8XY2();
-	void op8XY3();
-	void op8XY4();
+	void op8XY0(unsigned short);
+	void op8XY1(unsigned short);
+	void op8XY2(unsigned short);
+	void op8XY3(unsigned short);
+	void op8XY4(unsigned short);
 
-	void op8XY5();
-	void op8XY6();
-	void op8XY7();
-	void op8XYE();
-	void op9XY0();
+	void op8XY5(unsigned short);
+	void op8XY6(unsigned short);
+	void op8XY7(unsigned short);
+	void op8XYE(unsigned short);
+	void op9XY0(unsigned short);
 
-	void opANNN();
-	void opBNNN();
-	void opCXNN();
-	void opDXYN();
-	void opEX9E();
+	void opANNN(unsigned short);
+	void opBNNN(unsigned short);
+	void opCXNN(unsigned short);
+	void opDXYN(unsigned short);
+	void opEX9E(unsigned short);
 
-	void opEXA1();
-	void opFX07();
-	void opFX0A();
-	void opFX15();
-	void opFX18();
+	void opEXA1(unsigned short);
+	void opFX07(unsigned short);
+	void opFX0A(unsigned short);
+	void opFX15(unsigned short);
+	void opFX18(unsigned short);
 
-	void opFX1E();
-	void opFX29();
-	void opFX33();
-	void opFX55();
-	void opFX65();
+	void opFX1E(unsigned short);
+	void opFX29(unsigned short);
+	void opFX33(unsigned short);
+	void opFX55(unsigned short);
+	void opFX65(unsigned short);
 
 };
 
