@@ -17,7 +17,19 @@ chip8::~chip8() {
 }
 
 void chip8::gameloop(float dt) {
-	proc->cycle();
+
+	bool running = true;
+	
+	while (running) {
+		// Process CPU cycle
+		proc->cycle();
+
+		// Update graphics
+		gfx->doUpdate();
+
+		// Get input
+	}
+	
 }
 
 /**

@@ -91,6 +91,7 @@ void cpu::pushStack( unsigned short value )
  */
 unsigned short cpu::fetchNextOpcode()
 {
+	std::cerr << "Getting memory location/s: " << PC << " | " << PC+1 << std::endl;
 	unsigned short op = mem->get(PC) << 8 | mem->get(PC + 1);
 	return(op);
 }
@@ -107,5 +108,5 @@ void cpu::cycle()
 	func_p opCallFunction = op_lookup->get(op);
 	opCallFunction(op, this);
 
-	//TODO:Update timers
+	//TODO: Update timers
 }

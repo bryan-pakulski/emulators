@@ -1,5 +1,6 @@
 #include "opcodes.hpp"
 #include <iostream>
+#include <stdexcept>
 
 using namespace std;
 
@@ -31,6 +32,8 @@ func_p opcodes::get(unsigned short o) {
 		{
 			cerr << "Inserting new opcode: " << std::hex << o << " with key: " << std::hex << instruction << endl; 
 			optable.insert( std::pair<unsigned short, int>(o, instruction) );
+		} else {
+			throw std::runtime_error("Invalid opcode: " + to_string(o));
 		}
 	}
 
@@ -43,9 +46,9 @@ func_p opcodes::get(unsigned short o) {
  * Checks if an instruction already exists in the optable
  * If not it will be decoded and added for faster lookup next time
  *
- * @param[in]  o     Opcode
+ * @param o Opcode
  *
- * @return     Returns the index location of function to call
+ * @return Returns the index location of function to call
  */
 int opcodes::lookup(unsigned short o) {
 	// Find in optable

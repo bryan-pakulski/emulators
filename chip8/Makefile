@@ -8,7 +8,7 @@ INCF := include
 INC := -Iinclude -Iinclude/chip8 -Iinclude/SDL2
 
 # Libraries to include (by name)
-LDFLAGS := -Llib/libSDL2-2.0.so.0
+LDFLAGS := -Llib/libSDL2-2.0.so.0 -lSDL2
 
 # Binary folder location
 BIN := bin
