@@ -20,11 +20,10 @@ memory::~memory() {
  *
  * @param index 
  * 
- * @return unsigned char at memory location
+ * @return unsigned short at memory location
  */
 unsigned char memory::get(int index) {
-	unsigned char m = mem[index];
-	return m;
+	return mem[index];
 }
 
 /**

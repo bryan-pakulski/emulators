@@ -48,7 +48,7 @@ func_p opcodes::get(unsigned short o) {
  *
  * @param o Opcode
  *
- * @return Returns the index location of function to call
+ * @return     Returns the index location of function to call
  */
 int opcodes::lookup(unsigned short o) {
 	// Find in optable
@@ -636,8 +636,8 @@ void opcodes::opFX1E(unsigned short op, cpu* proc) {
 }
 
 /**
- * @brief      Sets I to the location of the sprite for the character in VX.
- *  					 Characters 0-F (in hexadecimal) are represented by a 4x5 font
+ * @brief      Sets I to the location of the sprite for the shortacter in VX.
+ *  					 shortacters 0-F (in hexadecimal) are represented by a 4x5 font
  */
 void opcodes::opFX29(unsigned short op, cpu* proc) {
 	proc->incrementPC(1);

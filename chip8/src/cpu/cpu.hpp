@@ -13,7 +13,7 @@ class cpu {
 	private:
 		opcodes* op_lookup;
 
-		unsigned char V[16] { 0 };					// CPU registers, 16th is carry flag
+		unsigned short V[16] { 0 };					// CPU registers, 16th is carry flag
 		unsigned short I;							// Index register
 		unsigned short PC;							// Program counter 0x000 -> 0xFFF
 		unsigned short op;							// Current opcode
@@ -45,8 +45,8 @@ class cpu {
 		unsigned short getOP();
 		void setOP( unsigned short value );
 
-		unsigned char getV( int index );
-		void setV( int index, unsigned char value );
+		unsigned short getV( int index );
+		void setV( int index, unsigned short value );
 
 		unsigned short popStack();
 		void pushStack( unsigned short value );

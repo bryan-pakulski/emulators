@@ -55,12 +55,12 @@ void cpu::setOP( unsigned short value )
 	op = value;
 }
 
-unsigned char cpu::getV(int index)
+unsigned short cpu::getV(int index)
 {
 	return V[index];
 }
 
-void cpu::setV(int index, unsigned char value)
+void cpu::setV(int index, unsigned short value)
 {
 	V[index] = value;
 }
@@ -91,8 +91,16 @@ void cpu::pushStack( unsigned short value )
  */
 unsigned short cpu::fetchNextOpcode()
 {
+	//BUG: opcode gets handled incorrectly
+	//BUG: value is returned normally from fetchNextOpcode, but when passed to function pointer value will change
 	std::cerr << "Getting memory location/s: " << PC << " | " << PC+1 << std::endl;
-	unsigned short op = mem->get(PC) << 8 | mem->get(PC + 1);
+
+	unsigned short opL = mem->get(PC);
+	opL = opL << 8;
+	unsigned short opR = mem->get(PC + 1);
+	opR = opR & 0x00FF;
+
+	unsigned short op = opL | opR;
 	return(op);
 }
 
