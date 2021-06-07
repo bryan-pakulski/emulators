@@ -3,4 +3,6 @@
 - libsdl2-ttf
 
 ## Lib packages
-You can install .so / .dll linking binaries directly into the lib subfolders, you can download linux binaries from: https://packages.ubuntu.com/bionic/
+You can install .so .a linking binaries directly into the lib subfolders.
+
+Note: you will need to download linux library binaries externally, i.e. Arch linux mirrors.
