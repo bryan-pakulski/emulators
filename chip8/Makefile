@@ -66,14 +66,13 @@ $(EXECUTABLE): $(OBJECTS)
 		mv $(EXECUTABLE) $(BIN)/$(EXECUTABLE); \
 	fi
 
-	# Copy library files
+ifneq ("$(wildcard $(MAINLIBFOLDER))", "")
 	if [ ! -d $(BIN)/lib/ ]; then \
 		mkdir $(BIN)/lib/; \
-	fi
-	cp $(MAINLIBFOLDER)/*.so* $(BIN)/lib/
-
-	# Patch binary with copied .so files
+	fi;
+	cp $(MAINLIBFOLDER)/*.so* $(BIN)/lib/;
 	cd $(BIN) && find lib/ -type f -name "*.so*" -exec patchelf $(EXECUTABLE) --add-needed {} \;
+endif
 
 	# Run file if run is set to true
 	# export DISPLAY=:0;\ (Windows fix for x)

@@ -3,6 +3,11 @@
 - libsdl2-ttf
 
 ## Lib packages
-You can install .so .a linking binaries directly into the lib subfolders.
+You can install .so .a linking binaries directly without the use of a package manager by following these steps:
 
-Note: you will need to download linux library binaries externally, i.e. Arch linux mirrors.
+- Create lib folder in this directory
+- Add required .so / .a binaries from above requirements
+
+The make file will automatically accomodate these and link them to the binary
+
+Note: You should download the external libraries only from a trusted external source i.e. Arch linux mirrors.
