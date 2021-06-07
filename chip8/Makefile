@@ -5,10 +5,10 @@ LIB := -L$(MAINLIBFOLDER)
 # main include folder with headers
 INCF := include
 # Include subfolders
-INC := -Iinclude -Iinclude/chip8 -Iinclude/SDL2
+INC := -Iinclude -Iinclude/chip8 -Iinclude/SDL2 
 
 # Libraries to include (by name)
-LDFLAGS := -Llib/libSDL2-2.0.so.0 -lSDL2
+LDFLAGS := lib/libSDL2-2.0.so.0
 
 # Binary folder location
 BIN := bin
@@ -30,7 +30,7 @@ TERMARGS := -c
 # Compiler to be used
 CC := g++
 # Cflags to be used
-CFLAGS := -std=c++11 -Wall -g3 $(INC)
+CFLAGS := -std=c++11 -Wall -g3 $(INC) 
 
 # Program name
 EXECUTABLE := main
@@ -66,6 +66,17 @@ $(EXECUTABLE): $(OBJECTS)
 		mv $(EXECUTABLE) $(BIN)/$(EXECUTABLE); \
 	fi
 
+	# Copy library files
+	if [ ! -d $(BIN)/lib/ ]; then \
+		mkdir $(BIN)/lib/; \
+	fi
+	cp $(MAINLIBFOLDER)/* $(BIN)/lib/
+
+	# Patch binary with copied .so files
+	cd $(BIN) && find lib/ -type f -name "*.so*" -exec patchelf $(EXECUTABLE) --add-needed {} \;
+
+	ls 
+	
 	# Run file if run is set to true
 	# export DISPLAY=:0;\ (Windows fix for x)
 	if [ "$(RUN)" = "ON" ]; then \
