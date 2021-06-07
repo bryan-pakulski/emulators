@@ -93,7 +93,7 @@ unsigned short cpu::fetchNextOpcode()
 {
 	//BUG: opcode gets handled incorrectly
 	//BUG: value is returned normally from fetchNextOpcode, but when passed to function pointer value will change
-	std::cerr << "Getting memory location/s: " << PC << " | " << PC+1 << std::endl;
+	std::cerr << "Getting memory location/s: " << std::dec << PC << " | " << std::dec << PC+1 << std::endl;
 
 	unsigned short opL = mem->get(PC);
 	opL = opL << 8;

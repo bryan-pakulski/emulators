@@ -68,7 +68,7 @@ int opcodes::lookup(unsigned short o) {
  * @return Returns the index location lookup key of the function to call
  */
 int opcodes::decode(unsigned short o) {
-	cerr << "Parsing new opcode: " << o << endl;
+	cerr << "Parsing new opcode: " << std::hex << o << endl;
 	switch( o & 0xF000)    
 	{
 		case 0x0000:

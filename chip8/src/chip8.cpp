@@ -51,8 +51,7 @@ bool chip8::loadRomIntoMemory(char* filePath) {
 	game.close();
 
 	if (game_buffer.size() > MAX_GAMESIZE) {
-		std:: cerr << "Error; maximum game size exceeded" <<
-		"Current limit is: " << MAX_GAMESIZE << " bytes" << std::endl;
+		std::cerr << "Error; maximum game size exceeded" << "Current limit is: " << MAX_GAMESIZE << " bytes" << std::endl;
 		return false;
 	} else {
 		std::cerr << "Game loaded successfully into buffer, moving to memory.." << std::endl;
