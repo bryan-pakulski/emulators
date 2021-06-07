@@ -70,13 +70,11 @@ $(EXECUTABLE): $(OBJECTS)
 	if [ ! -d $(BIN)/lib/ ]; then \
 		mkdir $(BIN)/lib/; \
 	fi
-	cp $(MAINLIBFOLDER)/* $(BIN)/lib/
+	cp $(MAINLIBFOLDER)/*.so* $(BIN)/lib/
 
 	# Patch binary with copied .so files
 	cd $(BIN) && find lib/ -type f -name "*.so*" -exec patchelf $(EXECUTABLE) --add-needed {} \;
 
-	ls 
-	
 	# Run file if run is set to true
 	# export DISPLAY=:0;\ (Windows fix for x)
 	if [ "$(RUN)" = "ON" ]; then \
