@@ -20,53 +20,43 @@ cpu::~cpu() {
 /**
  * Getter and setter functions for member variables
 */
-unsigned short cpu::getI()
-{
+unsigned short cpu::getI() {
 	return I;
 }
 
-void cpu::setI( unsigned short value )
-{
+void cpu::setI( unsigned short value ) {
 	I = value;
 }
 
-unsigned short cpu::getPC()
-{
+unsigned short cpu::getPC() {
 	return PC;
 }
 
-void cpu::incrementPC( int value )
-{
+void cpu::incrementPC( int value ) {
 	PC += ( 2 * value );
 }
 
-void cpu::setPC( unsigned short value)
-{
+void cpu::setPC( unsigned short value) {
 	PC = value;
 }
 
-unsigned short cpu::getOP()
-{
+unsigned short cpu::getOP() {
 	return op;
 }
 
-void cpu::setOP( unsigned short value )
-{
+void cpu::setOP( unsigned short value ) {
 	op = value;
 }
 
-unsigned short cpu::getV(int index)
-{
+unsigned short cpu::getV(int index) {
 	return V[index];
 }
 
-void cpu::setV(int index, unsigned short value)
-{
+void cpu::setV(int index, unsigned short value) {
 	V[index] = value;
 }
 
-unsigned short cpu::popStack()
-{
+unsigned short cpu::popStack() {
 	--sp;
 	unsigned short val = stack[sp];
 
@@ -74,12 +64,11 @@ unsigned short cpu::popStack()
 }
 
 /**
- * @brief Pushes to stack and increments stack pointer to stop data overwriting
+ * Pushes to stack and increments stack pointer to stop data overwriting
  *
  * @param value  The value to push
  */
-void cpu::pushStack( unsigned short value )
-{
+void cpu::pushStack(unsigned short value) {
 	stack[sp] = value;
 	++sp;
 }
@@ -89,32 +78,20 @@ void cpu::pushStack( unsigned short value )
  *
  * @return Returns combined opcodes to form a single instruction
  */
-unsigned short cpu::fetchNextOpcode()
-{
-	//BUG: opcode gets handled incorrectly
-	//BUG: value is returned normally from fetchNextOpcode, but when passed to function pointer value will change
-	std::cerr << "Getting memory location/s: " << std::dec << PC << " | " << std::dec << PC+1 << std::endl;
-
-	unsigned short opL = mem->get(PC);
-	opL = opL << 8;
-	unsigned short opR = mem->get(PC + 1);
-	opR = opR & 0x00FF;
-
-	unsigned short op = opL | opR;
-	return(op);
+unsigned short cpu::fetchNextOpcode() {
+	return mem->get(PC) << 8 | mem->get(PC+1) & 0x00FF;
 }
 
 /**
- * @brief      Call functions to complete 1 cpu cycle
+ * Call function mapping from opcode and update other logic i.e. timers
  */
-void cpu::cycle()
-{
+void cpu::cycle() {
 	// Fetch opcode
 	op = fetchNextOpcode();
 
 	// Decode opcode and execute
 	func_p opCallFunction = op_lookup->get(op);
-	opCallFunction(op, this);
+	opCallFunction(this);
 
 	//TODO: Update timers
 }

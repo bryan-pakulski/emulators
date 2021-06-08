@@ -4,86 +4,84 @@
 #include "cpu.hpp"
 #include <map>
 
-// Forward declaration
 class cpu;
-
-typedef void(*func_p)(unsigned short, cpu*);
+typedef void(*func_p)(cpu*);
 
 class opcodes {
 
 	private:
-		int lookup( unsigned short );
+		int lookup(unsigned short);
 
-		std::map< int, void(opcodes::*)(unsigned short, cpu*) > oplist = {
-		{ 0,  &opcodes::op0NNN }, { 1,  &opcodes::op00E0 }, { 2,  &opcodes::op00EE },
-		{ 3,  &opcodes::op1NNN }, { 4,  &opcodes::op2NNN },
+		std::map< int, void(*)(cpu*) > oplist = {
+		{ 0,  &op0NNN }, { 1,  &op00E0 }, { 2,  &op00EE },
+		{ 3,  &op1NNN }, { 4,  &op2NNN },
 
-		{ 5,  &opcodes::op3XNN }, { 6,  &opcodes::op4XNN }, { 7,  &opcodes::op5XY0 },
-		{ 8,  &opcodes::op6XNN }, { 9,  &opcodes::op7XNN },
+		{ 5,  &op3XNN }, { 6,  &op4XNN }, { 7,  &op5XY0 },
+		{ 8,  &op6XNN }, { 9,  &op7XNN },
 
-		{ 10,  &opcodes::op8XY0 }, { 11,  &opcodes::op8XY1 }, { 12,  &opcodes::op8XY2 },
-		{ 13,  &opcodes::op8XY3 }, { 14,  &opcodes::op8XY4 },
+		{ 10,  &op8XY0 }, { 11,  &op8XY1 }, { 12,  &op8XY2 },
+		{ 13,  &op8XY3 }, { 14,  &op8XY4 },
 
-		{ 15,  &opcodes::op8XY5 }, { 16,  &opcodes::op8XY6 }, { 17,  &opcodes::op8XY7 },
-		{ 18,  &opcodes::op8XYE }, { 19,  &opcodes::op9XY0 },
+		{ 15,  &op8XY5 }, { 16,  &op8XY6 }, { 17,  &op8XY7 },
+		{ 18,  &op8XYE }, { 19,  &op9XY0 },
 
-		{ 20,  &opcodes::opANNN }, { 21,  &opcodes::opBNNN }, { 22,  &opcodes::opCXNN },
-		{ 23,  &opcodes::opDXYN }, { 24,  &opcodes::opEX9E },
+		{ 20,  &opANNN }, { 21,  &opBNNN }, { 22,  &opCXNN },
+		{ 23,  &opDXYN }, { 24,  &opEX9E },
 
-		{ 25,  &opcodes::opEXA1 }, { 26,  &opcodes::opFX07 }, { 27,  &opcodes::opFX0A },
-		{ 28,  &opcodes::opFX15 }, { 29,  &opcodes::opFX18 },
+		{ 25,  &opEXA1 }, { 26,  &opFX07 }, { 27,  &opFX0A },
+		{ 28,  &opFX15 }, { 29,  &opFX18 },
 
-		{ 30,  &opcodes::opFX1E }, { 31,  &opcodes::opFX29 }, { 32,  &opcodes::opFX33 },
-		{ 33,  &opcodes::opFX55 }, { 34,  &opcodes::opFX65 }
+		{ 30,  &opFX1E }, { 31,  &opFX29 }, { 32,  &opFX33 },
+		{ 33,  &opFX55 }, { 34,  &opFX65 }
 	};
 
 	// This gets populated during runtime with opcodes, a hashtable is built so that
 	// the most used opcodes don't have to be decoded i.e. main game loop
-	std::map< unsigned short, int > optable;
-	int decode( unsigned short );
+	std::map<unsigned short, int> optable;
+	int decode(unsigned short);
 
 	// See wikipedia for list of opcode instructions
-	void op0NNN(unsigned short, cpu*);
-	void op00E0(unsigned short, cpu*);
-	void op00EE(unsigned short, cpu*);
-	void op1NNN(unsigned short, cpu*);
-	void op2NNN(unsigned short, cpu*);
+	static void op0NNN(cpu*);
+	static void op00E0(cpu*);
+	static void op00EE(cpu*);
+	static void op1NNN(cpu*);
+	static void op2NNN(cpu*);
 
-	void op3XNN(unsigned short, cpu*);
-	void op4XNN(unsigned short, cpu*);
-	void op5XY0(unsigned short, cpu*);
-	void op6XNN(unsigned short, cpu*);
-	void op7XNN(unsigned short, cpu*);
+	static void op3XNN(cpu*);
+	static void op4XNN(cpu*);
+	static void op5XY0(cpu*);
+	static void op6XNN(cpu*);
+	static void op7XNN(cpu*);
 
-	void op8XY0(unsigned short, cpu*);
-	void op8XY1(unsigned short, cpu*);
-	void op8XY2(unsigned short, cpu*);
-	void op8XY3(unsigned short, cpu*);
-	void op8XY4(unsigned short, cpu*);
+	static void op8XY0(cpu*);
+	static void op8XY1(cpu*);
+	static void op8XY2(cpu*);
+	static void op8XY3(cpu*);
+	static void op8XY4(cpu*);
 
-	void op8XY5(unsigned short, cpu*);
-	void op8XY6(unsigned short, cpu*);
-	void op8XY7(unsigned short, cpu*);
-	void op8XYE(unsigned short, cpu*);
-	void op9XY0(unsigned short, cpu*);
+	static void op8XY5(cpu*);
+	static void op8XY6(cpu*);
+	static void op8XY7(cpu*);
+	static void op8XYE(cpu*);
+	static void op9XY0(cpu*);
 
-	void opANNN(unsigned short, cpu*);
-	void opBNNN(unsigned short, cpu*);
-	void opCXNN(unsigned short, cpu*);
-	void opDXYN(unsigned short, cpu*);
-	void opEX9E(unsigned short, cpu*);
+	static void opANNN(cpu*);
+	static void opBNNN(cpu*);
+	static void opCXNN(cpu*);
+	static void opDXYN(cpu*);
+	static void opEX9E(cpu*);
 
-	void opEXA1(unsigned short, cpu*);
-	void opFX07(unsigned short, cpu*);
-	void opFX0A(unsigned short, cpu*);
-	void opFX15(unsigned short, cpu*);
-	void opFX18(unsigned short, cpu*);
+	static void opEXA1(cpu*);
+	static void opFX07(cpu*);
+	static void opFX0A(cpu*);
+	static void opFX15(cpu*);
+	static void opFX18(cpu*);
 
-	void opFX1E(unsigned short, cpu*);
-	void opFX29(unsigned short, cpu*);
-	void opFX33(unsigned short, cpu*);
-	void opFX55(unsigned short, cpu*);
-	void opFX65(unsigned short, cpu*);
+	static void opFX1E(cpu*);
+	static void opFX29(cpu*);
+	static void opFX33(cpu*);
+	static void opFX55(cpu*);
+	static void opFX65(cpu*);
 
 	public:
 		opcodes();

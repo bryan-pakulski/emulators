@@ -244,48 +244,48 @@ int opcodes::decode(unsigned short o) {
  * @brief      Calls RCA 1802 program at address NNN.
  * 						 Not necessary for most ROMs
  */
-void opcodes::op0NNN(unsigned short op, cpu* proc) {
+void opcodes::op0NNN(cpu* proc) {
 	
 }
 
 /**
  * @brief      Clears the screen
  */
-void opcodes::op00E0(unsigned short op, cpu* proc) {
+void opcodes::op00E0(cpu* proc) {
 	proc->clearScreen = true;
 	proc->incrementPC(1);
 }
 
 /**
- * @brief      Returns from a subroutine
+ * Returns from a subroutine
  */
-void opcodes::op00EE(unsigned short op, cpu* proc) {
+void opcodes::op00EE(cpu* proc) {
 	proc->setPC(proc->popStack());
 }
 
 /**
- * @brief      Jumps to address NNN
+ * Jumps to address NNN
  */
-void opcodes::op1NNN(unsigned short op, cpu* proc) {
-	proc->setPC( op & 0x0FFF );
+void opcodes::op1NNN(cpu* proc) {
+	proc->setPC( proc->getOP() & 0x0FFF );
 }
 
 /**
- * @brief      Calls subroutine at NNN
+ * Calls subroutine at NNN
  */
-void opcodes::op2NNN(unsigned short op, cpu* proc) {
+void opcodes::op2NNN(cpu* proc) {
 	proc->pushStack( proc->getPC() );
-	proc->setPC( op & 0x0FFF );
+	proc->setPC( proc->getOP() & 0x0FFF );
 }
 
 
 
 /**
- * @brief      Skips the next instruction if VX equals NN
+ * Skips the next instruction if VX equals NN
  */
-void opcodes::op3XNN(unsigned short op, cpu* proc) {
-	uint8_t x = (op & 0x0F00);
-	uint8_t n = (op & 0x00FF);
+void opcodes::op3XNN(cpu* proc) {
+	uint8_t x = (proc->getOP() & 0x0F00);
+	uint8_t n = (proc->getOP() & 0x00FF);
 
 	if ( proc->getV( x ) == n )
 		proc->incrementPC(2);
@@ -294,11 +294,11 @@ void opcodes::op3XNN(unsigned short op, cpu* proc) {
 }
 
 /**
- * @brief      Skips the next instruction if VX doesn't equal NN
+ * Skips the next instruction if VX doesn't equal NN
  */
-void opcodes::op4XNN(unsigned short op, cpu* proc) {
-	uint8_t x = (op & 0x0F00);
-	uint8_t n = (op & 0x00FF);
+void opcodes::op4XNN(cpu* proc) {
+	uint8_t x = (proc->getOP() & 0x0F00);
+	uint8_t n = (proc->getOP() & 0x00FF);
 
 	if ( proc->getV( x ) != n )
 		proc->incrementPC(2);
@@ -307,11 +307,11 @@ void opcodes::op4XNN(unsigned short op, cpu* proc) {
 }
 
 /**
- * @brief      Skips the next instruction if VX equals VY
+ * Skips the next instruction if VX equals VY
  */
-void opcodes::op5XY0(unsigned short op, cpu* proc) {
-	uint8_t x = (op & 0x0F00);
-	uint8_t y = (op & 0x00F0);
+void opcodes::op5XY0(cpu* proc) {
+	uint8_t x = (proc->getOP() & 0x0F00);
+	uint8_t y = (proc->getOP() & 0x00F0);
 
 	if ( proc->getV(x) == proc->getV(y) )
 		proc->incrementPC(2);
@@ -320,22 +320,22 @@ void opcodes::op5XY0(unsigned short op, cpu* proc) {
 }
 
 /**
- * @brief      Sets VX to NN
+ * Sets VX to NN
  */
-void opcodes::op6XNN(unsigned short op, cpu* proc) {
-	uint8_t x = (op & 0x0F00);
-	uint8_t n = (op & 0x00FF);
+void opcodes::op6XNN(cpu* proc) {
+	uint8_t x = (proc->getOP() & 0x0F00);
+	uint8_t n = (proc->getOP() & 0x00FF);
 
 	proc->setV(x, n);
 	proc->incrementPC(1);
 }
 
 /**
- * @brief      Adds NN to VX
+ * Adds NN to VX
  */
-void opcodes::op7XNN(unsigned short op, cpu* proc) {
-	uint8_t x = (op & 0x0F00);
-	uint8_t n = (op & 0x00FF);
+void opcodes::op7XNN(cpu* proc) {
+	uint8_t x = (proc->getOP() & 0x0F00);
+	uint8_t n = (proc->getOP() & 0x00FF);
 
 	proc->setV( x, ( proc->getV(x) + n ) );
 	proc->incrementPC(1);
@@ -344,57 +344,57 @@ void opcodes::op7XNN(unsigned short op, cpu* proc) {
 
 
 /**
- * @brief      Sets VX to the value of VY
+ * Sets VX to the value of VY
  */
-void opcodes::op8XY0(unsigned short op, cpu* proc) {
-	uint8_t x = (op & 0x0F00);
-	uint8_t y = (op & 0x00F0);
+void opcodes::op8XY0(cpu* proc) {
+	uint8_t x = (proc->getOP() & 0x0F00);
+	uint8_t y = (proc->getOP() & 0x00F0);
 
 	proc->setV( x, proc->getV( y ) );
 	proc->incrementPC(1);
 }
 
 /**
- * @brief      Sets VX to VX or VY
+ * Sets VX to VX or VY
  */
-void opcodes::op8XY1(unsigned short op, cpu* proc) {
-	uint8_t x = (op & 0x0F00);
-	uint8_t y = (op & 0x00F0);
+void opcodes::op8XY1(cpu* proc) {
+	uint8_t x = (proc->getOP() & 0x0F00);
+	uint8_t y = (proc->getOP() & 0x00F0);
 
 	proc->setV( x, ( proc->getV(x) | proc->getV(y) ) );
 	proc->incrementPC(1);
 }
 
 /**
- * @brief      Sets VX to VX and VY
+ * Sets VX to VX and VY
  */
-void opcodes::op8XY2(unsigned short op, cpu* proc) {
-	uint8_t x = (op & 0x0F00);
-	uint8_t y = (op & 0x00F0);
+void opcodes::op8XY2(cpu* proc) {
+	uint8_t x = (proc->getOP() & 0x0F00);
+	uint8_t y = (proc->getOP() & 0x00F0);
 
 	proc->setV( x, ( proc->getV(x) & proc->getV(y) ) );
 	proc->incrementPC(1);
 }
 
 /**
- * @brief      Sets VX to VX xor VY
+ * Sets VX to VX xor VY
  */
-void opcodes::op8XY3(unsigned short op, cpu* proc) {
-	uint8_t x = (op & 0x0F00);
-	uint8_t y = (op & 0x00F0);
+void opcodes::op8XY3(cpu* proc) {
+	uint8_t x = (proc->getOP() & 0x0F00);
+	uint8_t y = (proc->getOP() & 0x00F0);
 
 	proc->setV( x, ( proc->getV(x) ^ proc->getV(y) ) );
 	proc->incrementPC(1);
 }
 
 /**
- * @brief     Adds VY to VX. VF is set to 1 when there's a carry,
- * 						and to 0 when there isn't
+ * Adds VY to VX. VF is set to 1 when there's a carry,
+ * and to 0 when there isn't
  */
-void opcodes::op8XY4(unsigned short op, cpu* proc) {
+void opcodes::op8XY4(cpu* proc) {
 	// Get X, Y values and shift right
-	uint8_t x = (op & 0x0F00) >> 8;
-	uint8_t y = (op & 0x00F0) >> 4;
+	uint8_t x = (proc->getOP() & 0x0F00) >> 8;
+	uint8_t y = (proc->getOP() & 0x00F0) >> 4;
 
 	uint16_t sum = proc->getV(x) + proc->getV(y);
 
@@ -410,13 +410,13 @@ void opcodes::op8XY4(unsigned short op, cpu* proc) {
 
 
 /**
- * @brief      VY is subtracted from VX. VF is set to 0 when there's a 
- * 						 borrow, and 1 when there isn't
+ * VY is subtracted from VX. VF is set to 0 when there's a 
+ * borrow, and 1 when there isn't
  */
-void opcodes::op8XY5(unsigned short op, cpu* proc) {
+void opcodes::op8XY5(cpu* proc) {
 	// Get X, Y values and shift right
-	uint8_t x = (op & 0x0F00) >> 8;
-	uint8_t y = (op & 0x00F0) >> 4;
+	uint8_t x = (proc->getOP() & 0x0F00) >> 8;
+	uint8_t y = (proc->getOP() & 0x00F0) >> 4;
 
 	if (proc->getV(x) > proc->getV(y))
 		proc->setV(0xF, 1);
@@ -429,11 +429,11 @@ void opcodes::op8XY5(unsigned short op, cpu* proc) {
 }
 
 /**
- * @brief      Shifts VX right by one. VF is set to the value
- * 						 of the least significant bit of VX before the shift
+ * Shifts VX right by one. VF is set to the value
+ * of the least significant bit of VX before the shift
  */
-void opcodes::op8XY6(unsigned short op, cpu* proc) {
-	uint8_t x = (op & 0x0F00) >> 8;
+void opcodes::op8XY6(cpu* proc) {
+	uint8_t x = (proc->getOP() & 0x0F00) >> 8;
 
 	// Get least significant bit
 	proc->setV(0xF, proc->getV(x) & 0x1);
@@ -443,12 +443,12 @@ void opcodes::op8XY6(unsigned short op, cpu* proc) {
 }
 
 /**
- * @brief      Sets VX to VY minus VX. VF is set to 0 when there's a borrow,
- * 						 and 1 when there isn't
+ * Sets VX to VY minus VX. VF is set to 0 when there's a borrow,
+ * and 1 when there isn't
  */
-void opcodes::op8XY7(unsigned short op, cpu* proc) {
-	uint8_t x = (op & 0x0F00) >> 8;
-	uint8_t y = (op & 0x00F0) >> 4;
+void opcodes::op8XY7(cpu* proc) {
+	uint8_t x = (proc->getOP() & 0x0F00) >> 8;
+	uint8_t y = (proc->getOP() & 0x00F0) >> 4;
 	
 	if (proc->getV(y) > proc->getV(x))
 		proc->setV(0xF, 0);
@@ -461,12 +461,12 @@ void opcodes::op8XY7(unsigned short op, cpu* proc) {
 }
 
 /**
- * @brief      Shifts VX left by one.VF is set to the value of the
- * 						 most significant bit of VX before the shift
+ * Shifts VX left by one.VF is set to the value of the
+ * most significant bit of VX before the shift
  */
-void opcodes::op8XYE(unsigned short op, cpu* proc) {
-	uint8_t x = (op & 0x0F00) >> 8;
-	uint8_t y = (op & 0x00F0) >> 4;
+void opcodes::op8XYE(cpu* proc) {
+	uint8_t x = (proc->getOP() & 0x0F00) >> 8;
+	uint8_t y = (proc->getOP() & 0x00F0) >> 4;
 
 	proc->setV(0xF, (proc->getV(x) & 0x80) >> 7 );
 	proc->setV(x, proc->getV(x) << 1);
@@ -475,11 +475,11 @@ void opcodes::op8XYE(unsigned short op, cpu* proc) {
 }
 
 /**
- * @brief      Skips the next instruction if VX doesn't equal VY
+ * Skips the next instruction if VX doesn't equal VY
  */
-void opcodes::op9XY0(unsigned short op, cpu* proc) {
-	uint8_t x = ( op & 0x0F00 );
-	uint8_t y = ( op & 0x00F0 );
+void opcodes::op9XY0(cpu* proc) {
+	uint8_t x = ( proc->getOP() & 0x0F00 );
+	uint8_t y = ( proc->getOP() & 0x00F0 );
 
 	if ( proc->getV(x) != proc->getV(y) )
 		proc->incrementPC(2);
@@ -490,27 +490,27 @@ void opcodes::op9XY0(unsigned short op, cpu* proc) {
 
 
 /**
- * @brief      Sets I to the address NNN
+ * Sets I to the address NNN
  */
-void opcodes::opANNN(unsigned short op, cpu* proc) {
-	proc->setI( op & 0x0FFF );
+void opcodes::opANNN(cpu* proc) {
+	proc->setI( proc->getOP() & 0x0FFF );
 	proc->incrementPC(1);
 }
 
 /**
- * @brief      Jumps to the address NNN plus V0
+ * Jumps to the address NNN plus V0
  */
-void opcodes::opBNNN(unsigned short op, cpu* proc) {
-	proc->setPC( (op & 0x0FFF) + proc->getV(0) );
+void opcodes::opBNNN(cpu* proc) {
+	proc->setPC( (proc->getOP() & 0x0FFF) + proc->getV(0) );
 }
 
 /**
- * @brief      Sets VX to the result of a bitwise and
- * 						 operation on a random number and NN
+ * Sets VX to the result of a bitwise and
+ * operation on a random number and NN
  */
-void opcodes::opCXNN(unsigned short op, cpu* proc) {
-	uint8_t x = (op & 0x0F00) >> 8;
-	uint8_t v_nn = op & 0x00FF;
+void opcodes::opCXNN(cpu* proc) {
+	uint8_t x = (proc->getOP() & 0x0F00) >> 8;
+	uint8_t v_nn = proc->getOP() & 0x00FF;
 
 	
 	// TODO: generate random byte in the following format
@@ -520,17 +520,17 @@ void opcodes::opCXNN(unsigned short op, cpu* proc) {
 }
 
 /**
- * @brief      			 Sprites stored in memory at location in index register (I),
- *						 8bits wide. Wraps around the screen. If when 
- *						 drawn, clears a pixel, register VF is set to 1 otherwise it is
- *						 zero. All drawing is XOR drawing (i.e. it toggles the screen pixels).
- *						 Sprites are drawn starting at position VX, VY. N is the number of 8bit 
- *						 rows that need to be drawn. If N is greater than 1,
- *						 second line continues at position VX, VY+1, and so on
+ * Sprites stored in memory at location in index register (I),
+ * 8bits wide. Wraps around the screen. If when 
+ * drawn, clears a pixel, register VF is set to 1 otherwise it is
+ * zero. All drawing is XOR drawing (i.e. it toggles the screen pixels).
+ * Sprites are drawn starting at position VX, VY. N is the number of 8bit 
+ * rows that need to be drawn. If N is greater than 1,
+ * second line continues at position VX, VY+1, and so on
  */
-void opcodes::opDXYN(unsigned short op, cpu* proc) {
-	uint8_t x = (op & 0x0F00) >> 8;
-	uint8_t y = (op & 0x00F0) >> 4;
+void opcodes::opDXYN(cpu* proc) {
+	uint8_t x = (proc->getOP() & 0x0F00) >> 8;
+	uint8_t y = (proc->getOP() & 0x00F0) >> 4;
 
 	// Wrap if going beyond screen boundaries
 	//uint8_t xPos = proc->getV(x) % c8_display::EM_WIDTH; 
@@ -567,26 +567,26 @@ void opcodes::opDXYN(unsigned short op, cpu* proc) {
 }
 
 /**
- * @brief      Skips the next instruction if the key stored in VX is pressed
+ * Skips the next instruction if the key stored in VX is pressed
  */
-void opcodes::opEX9E(unsigned short op, cpu* proc) {
+void opcodes::opEX9E(cpu* proc) {
 	proc->incrementPC(1);
 }
 
 
 
 /**
- * @brief      Skips the next instruction if the key stored in VX isn't pressed
+ * Skips the next instruction if the key stored in VX isn't pressed
  */
-void opcodes::opEXA1(unsigned short op, cpu* proc) {
+void opcodes::opEXA1(cpu* proc) {
 	proc->incrementPC(1);
 }
 
 /**
- * @brief      Sets VX to the value of the delay timer
+ * Sets VX to the value of the delay timer
  */
-void opcodes::opFX07(unsigned short op, cpu* proc) {
-	uint8_t x = (op & 0x0F00) >> 8;
+void opcodes::opFX07(cpu* proc) {
+	uint8_t x = (proc->getOP() & 0x0F00) >> 8;
 
 	proc->setV(x, proc->delay_timer);
 
@@ -594,17 +594,17 @@ void opcodes::opFX07(unsigned short op, cpu* proc) {
 }
 
 /**
- * @brief      A key press is awaited, and then stored in VX
+ * A key press is awaited, and then stored in VX
  */
-void opcodes::opFX0A(unsigned short op, cpu* proc) {
+void opcodes::opFX0A(cpu* proc) {
 	proc->incrementPC(1);
 }
 
 /**
- * @brief      Sets the delay timer to VX
+ * Sets the delay timer to VX
  */
-void opcodes::opFX15(unsigned short op, cpu* proc) {
-	uint8_t x = (op & 0x0F00) >> 8;
+void opcodes::opFX15(cpu* proc) {
+	uint8_t x = (proc->getOP() & 0x0F00) >> 8;
 
 	proc->delay_timer = proc->getV(x);
 
@@ -612,10 +612,10 @@ void opcodes::opFX15(unsigned short op, cpu* proc) {
 }
 
 /**
- * @brief      Sets the sound timer to VX
+ * Sets the sound timer to VX
  */
-void opcodes::opFX18(unsigned short op, cpu* proc) {
-	uint8_t x = (op & 0x0F00) >> 8;
+void opcodes::opFX18(cpu* proc) {
+	uint8_t x = (proc->getOP() & 0x0F00) >> 8;
 
 	proc->sound_timer = proc->getV(x);
 
@@ -625,10 +625,10 @@ void opcodes::opFX18(unsigned short op, cpu* proc) {
 
 
 /**
- * @brief      Adds VX to I
+ * Adds VX to I
  */
-void opcodes::opFX1E(unsigned short op, cpu* proc) {
-	uint8_t x = (op & 0x0F00) >> 8;
+void opcodes::opFX1E(cpu* proc) {
+	uint8_t x = (proc->getOP() & 0x0F00) >> 8;
 
 	proc->setI(proc->getI() + x);
 
@@ -636,31 +636,31 @@ void opcodes::opFX1E(unsigned short op, cpu* proc) {
 }
 
 /**
- * @brief      Sets I to the location of the sprite for the shortacter in VX.
- *  					 shortacters 0-F (in hexadecimal) are represented by a 4x5 font
+ * Sets I to the location of the sprite for the shortacter in VX.
+ * shortacters 0-F (in hexadecimal) are represented by a 4x5 font
  */
-void opcodes::opFX29(unsigned short op, cpu* proc) {
+void opcodes::opFX29(cpu* proc) {
 	proc->incrementPC(1);
 }
 
 /**
- * @brief      Stores the Binary-coded decimal representation of VX,
- * 						 with the most significant of three digits at the address in I,
- * 						 the middle digit at I plus 1, and the least significant digit at
- * 						 I plus 2. (In other words, take the decimalrepresentation of VX,
- * 						 place the hundreds digit in memory at location in I,
- * 						 the tens digit at location I+1,
- * 						 and the ones digit at location I+2)
+ * Stores the Binary-coded decimal representation of VX,
+ * with the most significant of three digits at the address in I,
+ * the middle digit at I plus 1, and the least significant digit at
+ * I plus 2. (In other words, take the decimalrepresentation of VX,
+ * place the hundreds digit in memory at location in I,
+ * the tens digit at location I+1,
+ * and the ones digit at location I+2)
  */
-void opcodes::opFX33(unsigned short op, cpu* proc) {
+void opcodes::opFX33(cpu* proc) {
 	proc->incrementPC(1);
 }
 
 /**
- * @brief      Stores V0 to VX in memory starting at address I
+ * Stores V0 to VX in memory starting at address I
  */
-void opcodes::opFX55(unsigned short op, cpu* proc) {
-	uint8_t x = (op & 0x0F00) >> 8;
+void opcodes::opFX55(cpu* proc) {
+	uint8_t x = (proc->getOP() & 0x0F00) >> 8;
 
 	for (int i = 0; i < x; i++)
 		proc->mem->set( proc->getI() + i, proc->getV(x) );
@@ -669,11 +669,10 @@ void opcodes::opFX55(unsigned short op, cpu* proc) {
 }
 
 /**
- * @brief      Fills V0 to VX with values from memory starting at address I
+ * Fills V0 to VX with values from memory starting at address I
  */
-void opcodes::opFX65(unsigned short op, cpu* proc)
-{
-	uint8_t x = (op & 0x0F00) >> 8;
+void opcodes::opFX65(cpu* proc) {
+	uint8_t x = (proc->getOP() & 0x0F00) >> 8;
 
 	for (int i = 0; i < x; i++)
 		proc->setV( i, proc->mem->get(proc->getI() + i) );
