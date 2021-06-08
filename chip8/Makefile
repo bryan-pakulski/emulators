@@ -1,14 +1,6 @@
-# Library folder paths (to .so / .dll files)
-MAINLIBFOLDER = lib
-LIB := -L$(MAINLIBFOLDER)
-
-# main include folder with headers
-INCF := include
-# Include subfolders
-INC := -Iinclude -Iinclude/chip8 -Iinclude/SDL2 
-
-# Libraries to include (by name)
-LDFLAGS := lib/libSDL2-2.0.so.0
+#######################
+### FOLDER SETTINGS ###
+#######################
 
 # Binary folder location
 BIN := bin
@@ -16,37 +8,88 @@ BIN := bin
 SRC := src
 # Object folder location
 OBJ := obj
-# Tests folder location
-TST := tests
-# Documentation folder location
-DOC := doc
+# Static / Dynamic library folder location
+LIB := lib
+# Include folder for external libraries, check INCDEF to make sure subdirectories are included
+INC := include
 
-# Run file after compilation?
-RUN := OFF
+############################
+### Include definitions  ###
+############################
+
+INCDEF := -I$(INC) -Iinclude/SDL2
+
+######################
+### COMPILER FLAGS ###
+######################
+
+# Compiler to be used, g++ only supported currently
+CC := g++
+CFLAGS := -std=c++17 -Wall -g3 $(INCDEF)
+
+#########################
+### EXECUTION OPTIONS ###
+#########################
+
 # Terminal to use + arguments
 TERM := bash
 TERMARGS := -c
-
-# Compiler to be used
-CC := g++
-# Cflags to be used
-CFLAGS := -std=c++11 -Wall -g3 $(INC) 
-
 # Program name
 EXECUTABLE := main
 # Program arguments
-EXECUTABLE_ARGUMENTS := bin/roms/PONG
+EXECUTABLE_ARGUMENTS := roms/PONG
 
-# Source files & object generation
-SOURCES := $(shell find $(SRC) -type f -name "*.cpp") $(shell find $(INCF) -type f -name "*.cpp") $(shell find $(SRC) -type f -name "*.c") $(shell find $(INCF) -type f -name "*.c")
+####################
+### Source files ###
+####################
+
+SOURCES := $(shell find $(SRC) -type f -name "*.cpp")
+
+#################
+### Libraries ###
+#################
+
+LIBRARIES := $(shell find $(LIB) -type f -name "*.so*") $(shell find $(LIB) -type f -name "*.a*")
+
+#########################
+### Object generation ###
+#########################
+
 OBJECTS := $(SOURCES:.cpp=.o)
 
+# Generate objects based on source files
+%.o: %.cpp
+	$(CC) -c $(CFLAGS) $< $(LIBRARIES) -o $@
 
-# Main target
+###################
+### Main target ###
+###################
+
 $(EXECUTABLE): $(OBJECTS)
 	echo $(SOURCES)
-	$(CC) $(CFLAGS) $(OBJECTS) -o $(EXECUTABLE) $(LIB) $(LDFLAGS)
+	$(CC) $(CFLAGS) $(OBJECTS) -o $(EXECUTABLE) -L$(LIB) $(LIBRARIES)
 
+	# Move .o files if they exist
+	find $(SRC) -type f -name "*.o" -exec mv {} $(OBJ)/  \;
+
+	# Move binary file
+	if [ -f $(EXECUTABLE) ]; then \
+		mv $(EXECUTABLE) $(BIN)/$(EXECUTABLE); \
+	fi
+
+# copy any libraries to the binary release and link via patchelf if required
+ifneq ("$(wildcard $(LIB))", "")
+	if [ ! -d $(BIN)/lib/ ]; then \
+		mkdir $(BIN)/lib/; \
+	fi;
+	find $(LIB) -type f -name "*.so*" -exec cp {} $(BIN)/lib/ \;
+	cd $(BIN) && find lib/ -type f -name "*.so*" -exec patchelf $(EXECUTABLE) --add-needed {} \;
+endif
+
+##############
+###	 Init  ###
+##############
+init:
 	# Create binary folder if it doesn't exist
 	if [ ! -d $(BIN) ]; then \
 		mkdir $(BIN); \
@@ -57,45 +100,42 @@ $(EXECUTABLE): $(OBJECTS)
 		mkdir $(OBJ); \
 	fi
 
-	# Move .o files if they exist
-	find $(SRC) -type f -name "*.o" -exec mv {} $(OBJ) \;
-	find $(INCF) -type f -name "*.o" -exec mv {} $(OBJ) \;
-
-	# Move binary file
-	if [ -f $(EXECUTABLE) ]; then \
-		mv $(EXECUTABLE) $(BIN)/$(EXECUTABLE); \
+	# Create source folder if it doesn't exist
+	if [ ! -d $(SRC) ]; then \
+		mkdir $(SRC); \
 	fi
 
-ifneq ("$(wildcard $(MAINLIBFOLDER))", "")
-	if [ ! -d $(BIN)/lib/ ]; then \
-		mkdir $(BIN)/lib/; \
-	fi;
-	cp $(MAINLIBFOLDER)/*.so* $(BIN)/lib/;
-	cd $(BIN) && find lib/ -type f -name "*.so*" -exec patchelf $(EXECUTABLE) --add-needed {} \;
-endif
-
-	# Run file if run is set to true
-	# export DISPLAY=:0;\ (Windows fix for x)
-	if [ "$(RUN)" = "ON" ]; then \
-		$(TERM) $(TERMARGS) "./$(BIN)/$(EXECUTABLE) $(EXECUTABLE_ARGUMENTS)"; \
+	# Create lib folder if it doesn't exist
+	if [ ! -d $(LIB) ]; then \
+		mkdir $(LIB); \
 	fi
 
-# To obtain object files
-%.o: %.cpp
-	$(CC) -c $(CFLAGS) $< $(LDFLAGS) -o $@
+	# Create include folder if it doesn't exist
+	if [ ! -d $(INC) ]; then \
+		mkdir $(INC); \
+	fi
 
-%.o: %.c
-	$(CC) -c $(CFLAFS) $< $(LDFLAGS) -o $@
-
-# Run
+###################
+###  Run target  ##
+###################
 run:
-	$(TERM) $(TERMARGS) "./$(BIN)/$(EXECUTABLE) $(EXECUTABLE_ARGUMENTS)"
+	cd $(BIN); \
+	$(TERM) $(TERMARGS) "./$(EXECUTABLE) $(EXECUTABLE_ARGUMENTS)"; \
+	cd ..;
 
-# Check for memory leaks
+###################
+###  Mem check  ###
+###################
 mem_check:
-	valgrind --tool=memcheck --leak-check=yes --track-origins=yes $(BIN)/$(EXECUTABLE) $(EXECUTABLE_ARGUMENTS)
+	cd $(BIN); \
+	valgrind --tool=memcheck --leak-check=yes --track-origins=yes ./$(EXECUTABLE) $(EXECUTABLE_ARGUMENTS); \
+	cd ..;
 
-# Cleanup
+####################
+### Clean target ###
+####################
 clean:
-	rm -rf $(BIN)/$(EXECUTABLE)
-	rm -rf $(OBJ)/*.o
+	find $(BIN) -type f -name "$(EXECUTABLE)" -exec rm -f {} \;
+	find $(BIN)/lib -type f -name "*" -exec rm -f {} \;
+	find $(SRC) -type f -name "*.o" -exec rm -f {} \;
+	find $(OBJ) -type f -name "*.o" -exec rm -f {} \;
