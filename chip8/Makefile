@@ -59,7 +59,7 @@ OBJECTS := $(SOURCES:.cpp=.o)
 
 # Generate objects based on source files
 %.o: %.cpp
-	$(CC) -c $(CFLAGS) $< $(LIBRARIES) -o $@
+	$(CC) -c $(CFLAGS) $< -o $@
 
 ###################
 ### Main target ###

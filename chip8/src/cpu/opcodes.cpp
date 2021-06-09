@@ -38,8 +38,7 @@ func_p opcodes::get(unsigned short o) {
 	}
 
 	// Run instruction from opcode lookup table, passes along current opcode operation
-	auto f = oplist[instruction];
-	return (func_p) f;
+	return oplist[instruction];
 }
 
 /**

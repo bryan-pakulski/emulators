@@ -79,7 +79,7 @@ void cpu::pushStack(unsigned short value) {
  * @return Returns combined opcodes to form a single instruction
  */
 unsigned short cpu::fetchNextOpcode() {
-	return mem->get(PC) << 8 | mem->get(PC+1) & 0x00FF;
+	return mem->get(PC) << 8 | (mem->get(PC+1) & 0x00FF);
 }
 
 /**
