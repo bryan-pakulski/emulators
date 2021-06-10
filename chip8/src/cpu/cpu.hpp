@@ -4,10 +4,12 @@
 #include <SDL.h>
 #include <iostream>
 
+#include "../display/display.hpp"
 #include "../memory/memory.hpp"
 #include "opcodes.hpp"
 
 class opcodes;
+class display;
 
 class cpu {
 	private:
@@ -23,7 +25,7 @@ class cpu {
 		unsigned short fetchNextOpcode();			// Fetch next opcode from memory
 
 	public:
-		cpu(memory* m);
+		cpu(memory* m, display* g);
 		~cpu();
 
 		// Public flags
@@ -33,6 +35,7 @@ class cpu {
 		unsigned short sound_timer = 0x0;
 
 		memory* mem;
+		display* gfx;
 
 		// Getter and setter functions
 		unsigned short getI();

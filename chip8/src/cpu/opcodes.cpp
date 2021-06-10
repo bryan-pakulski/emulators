@@ -1,6 +1,8 @@
-#include "opcodes.hpp"
 #include <iostream>
 #include <stdexcept>
+
+#include "../globals.hpp"
+#include "opcodes.hpp"
 
 using namespace std;
 
@@ -465,7 +467,6 @@ void opcodes::op8XY7(cpu* proc) {
  */
 void opcodes::op8XYE(cpu* proc) {
 	uint8_t x = (proc->getOP() & 0x0F00) >> 8;
-	uint8_t y = (proc->getOP() & 0x00F0) >> 4;
 
 	proc->setV(0xF, (proc->getV(x) & 0x80) >> 7 );
 	proc->setV(x, proc->getV(x) << 1);
@@ -532,34 +533,32 @@ void opcodes::opDXYN(cpu* proc) {
 	uint8_t y = (proc->getOP() & 0x00F0) >> 4;
 
 	// Wrap if going beyond screen boundaries
-	//uint8_t xPos = proc->getV(x) % c8_display::EM_WIDTH; 
-	//uint8_t yPos = proc->getV(y) % c8_display::EM_HEIGHT;
+	uint8_t xPos = proc->getV(x) % c8_display::INTERNAL_WIDTH; 
+	uint8_t yPos = proc->getV(y) % c8_display::INTERNAL_HEIGHT;
 
 	proc->setV(0xF, 0);
 
 	// Iterate over display
 	//TODO: fix display code
-	/*
-	for (int row = 0; row < c8_display::EM_HEIGHT; ++row)
-	{
-		uint8_t sprite = proc->mem.get(proc->getI() + row);
+	for (int row = 0; row < c8_display::INTERNAL_HEIGHT; ++row) {
+		uint8_t sprite = proc->mem->get(proc->getI() + row);
 
-		for (int col = 0; col < 8; ++col)
-		{
+		for (int col = 0; col < 8; ++col) {
 			uint8_t spritePixel = sprite & (0x80 >> col);
-			int gfx_index = proc->gfx[(yPos + row) * c8_display::EM_WIDTH + (xPos + col)];
 
-			if (spritePixel)
-			{	
+			int index = (yPos + row) * c8_display::INTERNAL_WIDTH + (xPos + col);
+			unsigned int gfxVal = proc->gfx->getPixel(index);
+
+			if (spritePixel) {	
 				// Check collision
-				if (proc->gfx[gfx_index] == 0xFFFFFFFF)
+				if (gfxVal == 0xFFFFFFFF) {
 					proc->setV(0xF, 1);
-				
-				proc->gfx[gfx_index] ^= 0xFFFFFFFF;
+				}
+				gfxVal ^= 0xFFFFFFFF;
+				proc->gfx->setPixel(index, gfxVal);
 			}
 		}
 	}
-	*/
 	
 	proc->drawFlag = true;
 	proc->incrementPC(1);

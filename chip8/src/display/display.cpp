@@ -40,7 +40,6 @@ display::display() {
 			}
 		}
 	}
-
 }
 
 display::~display() {
@@ -50,11 +49,39 @@ display::~display() {
 }
 
 /**
- * @brief      Draws a "pixel" on screen, each pixel is multiplied by screen ratio so in reality it's 10px or so big
+ * Returns value of internal gfx array at index
  *
- * @param[in]  x         x position relative to the emulator screen width, max 63
- * @param[in]  y         y position relvative to the emulator screen height, max 31
- * @param[in]      renderer  The renderer to draw to
+ * @param index
+ * @return gfx value at index
+ */
+unsigned int display::getPixel(int index) {
+	if (index > c8_display::INTERNAL_WIDTH * c8_display::INTERNAL_HEIGHT) {
+		throw std::runtime_error("Requested pixel outside of maximum range");
+	}
+
+	return gfx[index];
+}
+
+/**
+ * Draws a "pixel" on screen, each pixel is multiplied by screen ratio so in reality it's 10px or so big
+ *
+ * @param x x position relative to the emulator screen width, max 63
+ * @param y y position relvative to the emulator screen height, max 31
+ */
+void display::setPixel(int index, int value) {
+	if (index > c8_display::INTERNAL_WIDTH * c8_display::INTERNAL_HEIGHT) {
+		throw std::runtime_error("Requested pixel outside of maximum range");
+	}
+
+	gfx[index] = value;
+}
+
+/**
+ * Draws a "pixel" on screen, each pixel is multiplied by screen ratio so in reality it's 10px or so big
+ *
+ * @param x x position relative to the emulator screen width, max 63
+ * @param y y position relvative to the emulator screen height, max 31
+ * @param renderer The renderer to draw to
  */
 void display::drawPixel( int x, int y, SDL_Renderer* renderer)
 {
@@ -71,7 +98,7 @@ void display::drawPixel( int x, int y, SDL_Renderer* renderer)
 }
 
 /**
- * @brief      Updates SDL display
+ * Updates SDL display
  */
 void display::doUpdate()
 {	

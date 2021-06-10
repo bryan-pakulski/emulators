@@ -6,8 +6,8 @@
 
 chip8::chip8() {
 	mem = new memory();
-	proc = new cpu(mem);
 	gfx = new display();
+	proc = new cpu(mem, gfx);
 }
 
 chip8::~chip8() {
@@ -24,8 +24,14 @@ void chip8::gameloop(float dt) {
 		// Process CPU cycle
 		proc->cycle();
 
-		// Update graphics
-		gfx->doUpdate();
+		if (proc->drawFlag) {
+			gfx->doUpdate();
+		}
+
+		if (proc->clearScreen) {
+			gfx->clear();
+		}
+		
 
 		// Get input
 	}

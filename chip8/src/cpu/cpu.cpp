@@ -2,8 +2,9 @@
 #include <vector>
 #include <fstream>
 
-cpu::cpu(memory* m) {
+cpu::cpu(memory* m, display* g) {
 	mem = m;
+	gfx = g;
 	op_lookup = new opcodes();
 	drawFlag = true;
 	clearScreen = true;
@@ -56,9 +57,13 @@ void cpu::setV(int index, unsigned short value) {
 	V[index] = value;
 }
 
+/**
+ * Pops from stack
+ */
 unsigned short cpu::popStack() {
 	--sp;
 	unsigned short val = stack[sp];
+	stack[sp] = 0;
 
 	return val;
 }
