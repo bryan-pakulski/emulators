@@ -1,6 +1,8 @@
 #ifndef __GLOBALSC8_HPP__
 #define __GLOBALSC8_HPP__
 
+const int CLOCK_SPEED = 540;
+
 const int SCREEN_WIDTH = 640;
 const int SCREEN_HEIGHT = 320;
 

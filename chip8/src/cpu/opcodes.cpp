@@ -285,8 +285,8 @@ void opcodes::op2NNN(cpu* proc) {
  * Skips the next instruction if VX equals NN
  */
 void opcodes::op3XNN(cpu* proc) {
-	uint8_t x = (proc->getOP() & 0x0F00);
-	uint8_t n = (proc->getOP() & 0x00FF);
+	unsigned short x = (proc->getOP() & 0x0F00);
+	unsigned short n = (proc->getOP() & 0x00FF);
 
 	if ( proc->getV( x ) == n )
 		proc->incrementPC(2);
@@ -298,8 +298,8 @@ void opcodes::op3XNN(cpu* proc) {
  * Skips the next instruction if VX doesn't equal NN
  */
 void opcodes::op4XNN(cpu* proc) {
-	uint8_t x = (proc->getOP() & 0x0F00);
-	uint8_t n = (proc->getOP() & 0x00FF);
+	unsigned short x = (proc->getOP() & 0x0F00);
+	unsigned short n = (proc->getOP() & 0x00FF);
 
 	if ( proc->getV( x ) != n )
 		proc->incrementPC(2);
@@ -311,8 +311,8 @@ void opcodes::op4XNN(cpu* proc) {
  * Skips the next instruction if VX equals VY
  */
 void opcodes::op5XY0(cpu* proc) {
-	uint8_t x = (proc->getOP() & 0x0F00);
-	uint8_t y = (proc->getOP() & 0x00F0);
+	unsigned short x = (proc->getOP() & 0x0F00);
+	unsigned short y = (proc->getOP() & 0x00F0);
 
 	if ( proc->getV(x) == proc->getV(y) )
 		proc->incrementPC(2);
@@ -324,8 +324,8 @@ void opcodes::op5XY0(cpu* proc) {
  * Sets VX to NN
  */
 void opcodes::op6XNN(cpu* proc) {
-	uint8_t x = (proc->getOP() & 0x0F00);
-	uint8_t n = (proc->getOP() & 0x00FF);
+	unsigned short x = (proc->getOP() & 0x0F00);
+	unsigned short n = (proc->getOP() & 0x00FF);
 
 	proc->setV(x, n);
 	proc->incrementPC(1);
@@ -335,8 +335,8 @@ void opcodes::op6XNN(cpu* proc) {
  * Adds NN to VX
  */
 void opcodes::op7XNN(cpu* proc) {
-	uint8_t x = (proc->getOP() & 0x0F00);
-	uint8_t n = (proc->getOP() & 0x00FF);
+	unsigned short x = (proc->getOP() & 0x0F00);
+	unsigned short n = (proc->getOP() & 0x00FF);
 
 	proc->setV( x, ( proc->getV(x) + n ) );
 	proc->incrementPC(1);
@@ -348,8 +348,8 @@ void opcodes::op7XNN(cpu* proc) {
  * Sets VX to the value of VY
  */
 void opcodes::op8XY0(cpu* proc) {
-	uint8_t x = (proc->getOP() & 0x0F00);
-	uint8_t y = (proc->getOP() & 0x00F0);
+	unsigned short x = (proc->getOP() & 0x0F00);
+	unsigned short y = (proc->getOP() & 0x00F0);
 
 	proc->setV( x, proc->getV( y ) );
 	proc->incrementPC(1);
@@ -359,8 +359,8 @@ void opcodes::op8XY0(cpu* proc) {
  * Sets VX to VX or VY
  */
 void opcodes::op8XY1(cpu* proc) {
-	uint8_t x = (proc->getOP() & 0x0F00);
-	uint8_t y = (proc->getOP() & 0x00F0);
+	unsigned short x = (proc->getOP() & 0x0F00);
+	unsigned short y = (proc->getOP() & 0x00F0);
 
 	proc->setV( x, ( proc->getV(x) | proc->getV(y) ) );
 	proc->incrementPC(1);
@@ -370,8 +370,8 @@ void opcodes::op8XY1(cpu* proc) {
  * Sets VX to VX and VY
  */
 void opcodes::op8XY2(cpu* proc) {
-	uint8_t x = (proc->getOP() & 0x0F00);
-	uint8_t y = (proc->getOP() & 0x00F0);
+	unsigned short x = (proc->getOP() & 0x0F00);
+	unsigned short y = (proc->getOP() & 0x00F0);
 
 	proc->setV( x, ( proc->getV(x) & proc->getV(y) ) );
 	proc->incrementPC(1);
@@ -381,8 +381,8 @@ void opcodes::op8XY2(cpu* proc) {
  * Sets VX to VX xor VY
  */
 void opcodes::op8XY3(cpu* proc) {
-	uint8_t x = (proc->getOP() & 0x0F00);
-	uint8_t y = (proc->getOP() & 0x00F0);
+	unsigned short x = (proc->getOP() & 0x0F00);
+	unsigned short y = (proc->getOP() & 0x00F0);
 
 	proc->setV( x, ( proc->getV(x) ^ proc->getV(y) ) );
 	proc->incrementPC(1);
@@ -394,8 +394,8 @@ void opcodes::op8XY3(cpu* proc) {
  */
 void opcodes::op8XY4(cpu* proc) {
 	// Get X, Y values and shift right
-	uint8_t x = (proc->getOP() & 0x0F00) >> 8;
-	uint8_t y = (proc->getOP() & 0x00F0) >> 4;
+	unsigned short x = (proc->getOP() & 0x0F00) >> 8;
+	unsigned short y = (proc->getOP() & 0x00F0) >> 4;
 
 	uint16_t sum = proc->getV(x) + proc->getV(y);
 
@@ -416,8 +416,8 @@ void opcodes::op8XY4(cpu* proc) {
  */
 void opcodes::op8XY5(cpu* proc) {
 	// Get X, Y values and shift right
-	uint8_t x = (proc->getOP() & 0x0F00) >> 8;
-	uint8_t y = (proc->getOP() & 0x00F0) >> 4;
+	unsigned short x = (proc->getOP() & 0x0F00) >> 8;
+	unsigned short y = (proc->getOP() & 0x00F0) >> 4;
 
 	if (proc->getV(x) > proc->getV(y))
 		proc->setV(0xF, 1);
@@ -434,7 +434,7 @@ void opcodes::op8XY5(cpu* proc) {
  * of the least significant bit of VX before the shift
  */
 void opcodes::op8XY6(cpu* proc) {
-	uint8_t x = (proc->getOP() & 0x0F00) >> 8;
+	unsigned short x = (proc->getOP() & 0x0F00) >> 8;
 
 	// Get least significant bit
 	proc->setV(0xF, proc->getV(x) & 0x1);
@@ -448,8 +448,8 @@ void opcodes::op8XY6(cpu* proc) {
  * and 1 when there isn't
  */
 void opcodes::op8XY7(cpu* proc) {
-	uint8_t x = (proc->getOP() & 0x0F00) >> 8;
-	uint8_t y = (proc->getOP() & 0x00F0) >> 4;
+	unsigned short x = (proc->getOP() & 0x0F00) >> 8;
+	unsigned short y = (proc->getOP() & 0x00F0) >> 4;
 	
 	if (proc->getV(y) > proc->getV(x))
 		proc->setV(0xF, 0);
@@ -466,7 +466,7 @@ void opcodes::op8XY7(cpu* proc) {
  * most significant bit of VX before the shift
  */
 void opcodes::op8XYE(cpu* proc) {
-	uint8_t x = (proc->getOP() & 0x0F00) >> 8;
+	unsigned short x = (proc->getOP() & 0x0F00) >> 8;
 
 	proc->setV(0xF, (proc->getV(x) & 0x80) >> 7 );
 	proc->setV(x, proc->getV(x) << 1);
@@ -478,8 +478,8 @@ void opcodes::op8XYE(cpu* proc) {
  * Skips the next instruction if VX doesn't equal VY
  */
 void opcodes::op9XY0(cpu* proc) {
-	uint8_t x = ( proc->getOP() & 0x0F00 );
-	uint8_t y = ( proc->getOP() & 0x00F0 );
+	unsigned short x = ( proc->getOP() & 0x0F00 );
+	unsigned short y = ( proc->getOP() & 0x00F0 );
 
 	if ( proc->getV(x) != proc->getV(y) )
 		proc->incrementPC(2);
@@ -509,8 +509,8 @@ void opcodes::opBNNN(cpu* proc) {
  * operation on a random number and NN
  */
 void opcodes::opCXNN(cpu* proc) {
-	uint8_t x = (proc->getOP() & 0x0F00) >> 8;
-	uint8_t v_nn = proc->getOP() & 0x00FF;
+	unsigned short x = (proc->getOP() & 0x0F00) >> 8;
+	unsigned short v_nn = proc->getOP() & 0x00FF;
 
 	
 	// TODO: generate random byte in the following format
@@ -529,22 +529,22 @@ void opcodes::opCXNN(cpu* proc) {
  * second line continues at position VX, VY+1, and so on
  */
 void opcodes::opDXYN(cpu* proc) {
-	uint8_t x = (proc->getOP() & 0x0F00) >> 8;
-	uint8_t y = (proc->getOP() & 0x00F0) >> 4;
+	unsigned short x = (proc->getOP() & 0x0F00) >> 8;
+	unsigned short y = (proc->getOP() & 0x00F0) >> 4;
 
 	// Wrap if going beyond screen boundaries
-	uint8_t xPos = proc->getV(x) % c8_display::INTERNAL_WIDTH; 
-	uint8_t yPos = proc->getV(y) % c8_display::INTERNAL_HEIGHT;
+	unsigned short xPos = proc->getV(x) % c8_display::INTERNAL_WIDTH; 
+	unsigned short yPos = proc->getV(y) % c8_display::INTERNAL_HEIGHT;
 
 	proc->setV(0xF, 0);
 
 	// Iterate over display
 	//TODO: fix display code
 	for (int row = 0; row < c8_display::INTERNAL_HEIGHT; ++row) {
-		uint8_t sprite = proc->mem->get(proc->getI() + row);
+		unsigned short sprite = proc->mem->get(proc->getI() + row);
 
 		for (int col = 0; col < 8; ++col) {
-			uint8_t spritePixel = sprite & (0x80 >> col);
+			unsigned short spritePixel = sprite & (0x80 >> col);
 
 			int index = (yPos + row) * c8_display::INTERNAL_WIDTH + (xPos + col);
 			unsigned int gfxVal = proc->gfx->getPixel(index);
@@ -584,9 +584,9 @@ void opcodes::opEXA1(cpu* proc) {
  * Sets VX to the value of the delay timer
  */
 void opcodes::opFX07(cpu* proc) {
-	uint8_t x = (proc->getOP() & 0x0F00) >> 8;
+	unsigned short x = (proc->getOP() & 0x0F00) >> 8;
 
-	proc->setV(x, proc->delay_timer);
+	proc->setV(x, proc->delayTimer);
 
 	proc->incrementPC(1);
 }
@@ -602,9 +602,9 @@ void opcodes::opFX0A(cpu* proc) {
  * Sets the delay timer to VX
  */
 void opcodes::opFX15(cpu* proc) {
-	uint8_t x = (proc->getOP() & 0x0F00) >> 8;
+	unsigned short x = (proc->getOP() & 0x0F00) >> 8;
 
-	proc->delay_timer = proc->getV(x);
+	proc->delayTimer = proc->getV(x);
 
 	proc->incrementPC(1);
 }
@@ -613,9 +613,9 @@ void opcodes::opFX15(cpu* proc) {
  * Sets the sound timer to VX
  */
 void opcodes::opFX18(cpu* proc) {
-	uint8_t x = (proc->getOP() & 0x0F00) >> 8;
+	unsigned short x = (proc->getOP() & 0x0F00) >> 8;
 
-	proc->sound_timer = proc->getV(x);
+	proc->soundTimer = proc->getV(x);
 
 	proc->incrementPC(1);
 }
@@ -626,7 +626,7 @@ void opcodes::opFX18(cpu* proc) {
  * Adds VX to I
  */
 void opcodes::opFX1E(cpu* proc) {
-	uint8_t x = (proc->getOP() & 0x0F00) >> 8;
+	unsigned short x = (proc->getOP() & 0x0F00) >> 8;
 
 	proc->setI(proc->getI() + x);
 
@@ -658,7 +658,7 @@ void opcodes::opFX33(cpu* proc) {
  * Stores V0 to VX in memory starting at address I
  */
 void opcodes::opFX55(cpu* proc) {
-	uint8_t x = (proc->getOP() & 0x0F00) >> 8;
+	unsigned short x = (proc->getOP() & 0x0F00) >> 8;
 
 	for (int i = 0; i < x; i++)
 		proc->mem->set( proc->getI() + i, proc->getV(x) );
@@ -670,7 +670,7 @@ void opcodes::opFX55(cpu* proc) {
  * Fills V0 to VX with values from memory starting at address I
  */
 void opcodes::opFX65(cpu* proc) {
-	uint8_t x = (proc->getOP() & 0x0F00) >> 8;
+	unsigned short x = (proc->getOP() & 0x0F00) >> 8;
 
 	for (int i = 0; i < x; i++)
 		proc->setV( i, proc->mem->get(proc->getI() + i) );

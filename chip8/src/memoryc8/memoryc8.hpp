@@ -5,7 +5,7 @@
 
 #define MAX_GAMESIZE 0x0DFF // Based on memory range of 0x200 - 0xFFF
 
-class memory {
+class memoryc8 {
 	private:
 		unsigned char mem[4096];
 
@@ -30,8 +30,8 @@ class memory {
 		};
 	
 	public:
-		memory();
-		~memory();
+		memoryc8();
+		~memoryc8();
 
 		// Gets instruction at index
 		unsigned char get( int );

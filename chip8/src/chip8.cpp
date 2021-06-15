@@ -1,39 +1,46 @@
 #include "chip8.hpp"
 
 #include <iostream>
+#include <chrono>
 #include <vector>
 #include <fstream>
+#include "globals.hpp"
 
 chip8::chip8() {
-	mem = new memory();
+	mem = new memoryc8();
 	gfx = new display();
 	proc = new cpu(mem, gfx);
+	timer = new clockTimer<cpuCycle, cpu*>(CLOCK_SPEED);
 }
 
 chip8::~chip8() {
 	delete gfx;
 	delete proc;
 	delete mem;
+	delete timer;
 }
 
-void chip8::gameloop(float dt) {
+void chip8::gameloop() {
 
 	bool running = true;
+	cpuCycle cyclePtr = cpu::cycle;
 	
 	while (running) {
+
 		// Process CPU cycle
-		proc->cycle();
+		timer->executeCommand(cyclePtr, proc);
 
 		if (proc->drawFlag) {
 			gfx->doUpdate();
+			proc->drawFlag = false;
 		}
 
 		if (proc->clearScreen) {
 			gfx->clear();
+			proc->clearScreen = false;
 		}
 		
-
-		// Get input
+		//TODO: Get input
 	}
 	
 }
@@ -73,3 +80,5 @@ bool chip8::loadRomIntoMemory(char* filePath) {
 
 	return true;
 }
+
+template class clockTimer<cpuCycle, cpu*>;

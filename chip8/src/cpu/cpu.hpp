@@ -5,7 +5,7 @@
 #include <iostream>
 
 #include "../display/display.hpp"
-#include "../memory/memory.hpp"
+#include "../memoryc8/memoryc8.hpp"
 #include "opcodes.hpp"
 
 class opcodes;
@@ -22,19 +22,17 @@ class cpu {
 		unsigned short stack[16] { 0 };				// Stack implementation
 		unsigned short sp;							// Stack pointer
 
-		unsigned short fetchNextOpcode();			// Fetch next opcode from memory
-
 	public:
-		cpu(memory* m, display* g);
+		cpu(memoryc8* m, display* g);
 		~cpu();
 
 		// Public flags
 		bool drawFlag;
 		bool clearScreen;
-		unsigned short delay_timer = 0x0;
-		unsigned short sound_timer = 0x0;
+		unsigned short delayTimer = 0x0;
+		unsigned short soundTimer = 0x0;
 
-		memory* mem;
+		memoryc8* mem;
 		display* gfx;
 
 		// Getter and setter functions
@@ -54,7 +52,9 @@ class cpu {
 		unsigned short popStack();
 		void pushStack( unsigned short value );
 
-		void cycle();
+		unsigned short fetchNextOpcode();			// Fetch next opcode from memory
+
+		static void cycle(cpu*);
 		
 };
 

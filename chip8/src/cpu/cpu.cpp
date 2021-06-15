@@ -2,7 +2,7 @@
 #include <vector>
 #include <fstream>
 
-cpu::cpu(memory* m, display* g) {
+cpu::cpu(memoryc8* m, display* g) {
 	mem = m;
 	gfx = g;
 	op_lookup = new opcodes();
@@ -90,13 +90,19 @@ unsigned short cpu::fetchNextOpcode() {
 /**
  * Call function mapping from opcode and update other logic i.e. timers
  */
-void cpu::cycle() {
+void cpu::cycle(cpu* proc) {
 	// Fetch opcode
-	op = fetchNextOpcode();
+	proc->setOP(proc->fetchNextOpcode());
 
 	// Decode opcode and execute
-	func_p opCallFunction = op_lookup->get(op);
-	opCallFunction(this);
+	func_p opCallFunction = proc->op_lookup->get(proc->getOP());
+	opCallFunction(proc);
 
-	//TODO: Update timers
+	if (proc->delayTimer > 0) {
+		--proc->delayTimer;
+	}
+
+	if (proc->soundTimer > 0) {
+		--proc->soundTimer;
+	}
 }

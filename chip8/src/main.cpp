@@ -30,10 +30,7 @@ int main(int argc, char* argv[])
 	// Initialise cpu and load rom
 	chip8 c8 = chip8();
 	if (c8.loadRomIntoMemory(argv[1])) {
-		//TODO: run rom
-
-		c8.gameloop(0.0);
-
+		c8.gameloop();
 	} else {
 		cerr << "Error loading rom into memory, please check file path" << endl;
 		return -1;

@@ -1,9 +1,9 @@
-#include "memory.hpp"
+#include "memoryc8.hpp"
 
 /**
  * Initialise memory space, load fontset
  */
-memory::memory() {
+memoryc8::memoryc8() {
 	// Load fontset
 	for ( int i = 0; i < 80; i++ )
 		set( i, chip8_fontset[i] );
@@ -11,7 +11,7 @@ memory::memory() {
 	std::cerr << "Initialised fontset" << std::endl;
 }
 
-memory::~memory() {
+memoryc8::~memoryc8() {
 
 }
 
@@ -22,7 +22,7 @@ memory::~memory() {
  * 
  * @return unsigned short at memory location
  */
-unsigned char memory::get(int index) {
+unsigned char memoryc8::get(int index) {
 	return mem[index];
 }
 
@@ -32,6 +32,6 @@ unsigned char memory::get(int index) {
  * @param index
  * @param value 
  */
-void memory::set(int index, unsigned char value) {
+void memoryc8::set(int index, unsigned char value) {
 	mem[index] = value;
 }
