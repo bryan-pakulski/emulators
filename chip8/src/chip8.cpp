@@ -10,14 +10,14 @@ chip8::chip8() {
 	mem = new memoryc8();
 	gfx = new display();
 	proc = new cpu(mem, gfx);
-	timer = new clockTimer<cpuCycle, cpu*>(CLOCK_SPEED);
+	scheduler = new taskScheduler<cpuCycle, cpu*>(CLOCK_SPEED);
 }
 
 chip8::~chip8() {
 	delete gfx;
 	delete proc;
 	delete mem;
-	delete timer;
+	delete scheduler;
 }
 
 void chip8::gameloop() {
@@ -28,7 +28,7 @@ void chip8::gameloop() {
 	while (running) {
 
 		// Process CPU cycle
-		timer->executeCommand(cyclePtr, proc);
+		scheduler->executeCommand(cyclePtr, proc);
 
 		if (proc->drawFlag) {
 			gfx->doUpdate();
@@ -81,4 +81,4 @@ bool chip8::loadRomIntoMemory(char* filePath) {
 	return true;
 }
 
-template class clockTimer<cpuCycle, cpu*>;
+template class taskScheduler<cpuCycle, cpu*>;

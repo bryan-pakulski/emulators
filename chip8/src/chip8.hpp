@@ -3,7 +3,7 @@
 
 #include <iostream>
 
-#include "cpu/clockTimer.hpp"
+#include "cpu/taskScheduler.hpp"
 #include "cpu/cpu.hpp"
 #include "display/display.hpp"
 #include "memoryc8/memoryc8.hpp"
@@ -15,7 +15,7 @@ class chip8 {
 		memoryc8 *mem;
 		cpu *proc;
 		display *gfx;
-		clockTimer<cpuCycle, cpu*> *timer;
+		taskScheduler<cpuCycle, cpu*> *scheduler;
 
 	public:
 		chip8();
