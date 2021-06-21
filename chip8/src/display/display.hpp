@@ -11,7 +11,7 @@ class display {
 		SDL_Window* gWindow;
 		SDL_Renderer* gRenderer;
 
-		unsigned int gfx[ c8_display::INTERNAL_WIDTH * c8_display::INTERNAL_HEIGHT ];
+		unsigned char gfx[ c8_display::INTERNAL_WIDTH * c8_display::INTERNAL_HEIGHT ];
 
 		void drawPixel( int x, int y, SDL_Renderer* renderer);
 
@@ -21,8 +21,8 @@ class display {
 
 		void doUpdate();
 		void clear();
-		unsigned int getPixel(int index);
-		void setPixel(int index, int value);
+		unsigned char getPixel(int index);
+		void setPixel(int index, unsigned char value);
 };
 
 

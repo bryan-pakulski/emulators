@@ -40,7 +40,7 @@ class cpu {
 		void setI( unsigned short value );
 
 		unsigned short getPC();
-		void incrementPC( int value );
+		void stepPC( int value );
 		void setPC( unsigned short value );
 
 		unsigned short getOP();

@@ -33,7 +33,7 @@ unsigned short cpu::getPC() {
 	return PC;
 }
 
-void cpu::incrementPC( int value ) {
+void cpu::stepPC( int value ) {
 	PC += ( 2 * value );
 }
 
@@ -97,12 +97,5 @@ void cpu::cycle(cpu* proc) {
 	// Decode opcode and execute
 	func_p opCallFunction = proc->op_lookup->get(proc->getOP());
 	opCallFunction(proc);
-
-	if (proc->delayTimer > 0) {
-		--proc->delayTimer;
-	}
-
-	if (proc->soundTimer > 0) {
-		--proc->soundTimer;
-	}
+	proc->stepPC(1);
 }

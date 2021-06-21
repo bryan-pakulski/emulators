@@ -6,6 +6,7 @@
 #include "cpu/taskScheduler.hpp"
 #include "cpu/cpu.hpp"
 #include "display/display.hpp"
+#include "input/inputHandler.hpp"
 #include "memoryc8/memoryc8.hpp"
 
 typedef void(*cpuCycle)(cpu*);
@@ -15,7 +16,10 @@ class chip8 {
 		memoryc8 *mem;
 		cpu *proc;
 		display *gfx;
-		taskScheduler<cpuCycle, cpu*> *scheduler;
+		taskScheduler<cpuCycle, cpu*> *cpuScheduler;
+		inputHandler *in;
+		
+		SDL_Event e;
 
 	public:
 		chip8();

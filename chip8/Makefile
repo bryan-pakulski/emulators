@@ -37,7 +37,7 @@ TERMARGS := -c
 # Program name
 EXECUTABLE := main
 # Program arguments
-EXECUTABLE_ARGUMENTS := roms/BC_test
+EXECUTABLE_ARGUMENTS := roms/UFO
 
 ####################
 ### Source files ###

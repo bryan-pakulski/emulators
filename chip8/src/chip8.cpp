@@ -10,14 +10,16 @@ chip8::chip8() {
 	mem = new memoryc8();
 	gfx = new display();
 	proc = new cpu(mem, gfx);
-	scheduler = new taskScheduler<cpuCycle, cpu*>(CLOCK_SPEED);
+	in = new inputHandler();
+	cpuScheduler = new taskScheduler<cpuCycle, cpu*>(CLOCK_SPEED);
 }
 
 chip8::~chip8() {
 	delete gfx;
 	delete proc;
 	delete mem;
-	delete scheduler;
+	delete in;
+	delete cpuScheduler;
 }
 
 void chip8::gameloop() {
@@ -27,9 +29,10 @@ void chip8::gameloop() {
 	
 	while (running) {
 
-		// Process CPU cycle
-		scheduler->executeCommand(cyclePtr, proc);
+		// CPU
+		cpuScheduler->executeCommand(cyclePtr, proc);
 
+		// GFX
 		if (proc->drawFlag) {
 			gfx->doUpdate();
 			proc->drawFlag = false;
@@ -40,7 +43,24 @@ void chip8::gameloop() {
 			proc->clearScreen = false;
 		}
 		
-		//TODO: Get input
+		// INPUT
+		while (SDL_PollEvent(&e) != 0) {
+			if (e.type == SDL_QUIT) {
+				running = false;
+				break;
+			}
+			in->processInput(e, proc);
+		}
+
+		// SOUND
+		// TODO: these need to de-increment at 60hz
+		if (proc->delayTimer > 0) {
+			--proc->delayTimer;
+		}
+
+		if (proc->soundTimer > 0) {
+			--proc->soundTimer;
+		}
 	}
 	
 }

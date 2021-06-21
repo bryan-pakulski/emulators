@@ -21,8 +21,8 @@ display::display() {
 			"chip8 emu",
 			SDL_WINDOWPOS_UNDEFINED,
 			SDL_WINDOWPOS_UNDEFINED,
-			SCREEN_WIDTH,
-			SCREEN_HEIGHT,
+			c8_display::SCREEN_WIDTH,
+			c8_display::SCREEN_HEIGHT,
 			SDL_WINDOW_SHOWN
 		);
 
@@ -54,7 +54,7 @@ display::~display() {
  * @param index
  * @return gfx value at index
  */
-unsigned int display::getPixel(int index) {
+unsigned char display::getPixel(int index) {
 	if (index > c8_display::INTERNAL_WIDTH * c8_display::INTERNAL_HEIGHT) {
 		throw std::runtime_error("Requested pixel outside of maximum range");
 	}
@@ -68,7 +68,7 @@ unsigned int display::getPixel(int index) {
  * @param x x position relative to the emulator screen width, max 63
  * @param y y position relvative to the emulator screen height, max 31
  */
-void display::setPixel(int index, int value) {
+void display::setPixel(int index, unsigned char value) {
 	if (index > c8_display::INTERNAL_WIDTH * c8_display::INTERNAL_HEIGHT) {
 		throw std::runtime_error("Requested pixel outside of maximum range");
 	}
@@ -89,11 +89,11 @@ void display::drawPixel( int x, int y, SDL_Renderer* renderer)
 	if ( ( x > c8_display::INTERNAL_WIDTH - 1 || y > c8_display::INTERNAL_HEIGHT - 1 ) || ( x < 0 || y < 0 ) )
 		cerr << "Rendering error, drawing offscreen at coordinates " << x << ", " << y << endl;
 
-	int ratioW = SCREEN_WIDTH / c8_display::INTERNAL_WIDTH;
-	int ratioH = SCREEN_HEIGHT / c8_display::INTERNAL_HEIGHT;
+	int ratioW = c8_display::SCREEN_WIDTH / c8_display::INTERNAL_WIDTH;
+	int ratioH = c8_display::SCREEN_HEIGHT / c8_display::INTERNAL_HEIGHT;
 
 	SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
-	SDL_Rect rect = { x * ratioW, y * ratioH, SCREEN_WIDTH / c8_display::INTERNAL_WIDTH, SCREEN_HEIGHT / c8_display::INTERNAL_HEIGHT };
+	SDL_Rect rect = { x * ratioW, y * ratioH, c8_display::SCREEN_WIDTH / c8_display::INTERNAL_WIDTH, c8_display::SCREEN_HEIGHT / c8_display::INTERNAL_HEIGHT };
 	SDL_RenderFillRect(renderer, &rect);
 }
 
@@ -111,7 +111,7 @@ void display::doUpdate()
 	{
 		for (int j = 0; j < c8_display::INTERNAL_HEIGHT; j++)
 		{
-			if (gfx[ c8_display::INTERNAL_WIDTH * j + i] == 0xFFFFFFFF)
+			if (gfx[ c8_display::INTERNAL_WIDTH * j + i] == 0xF)
 				drawPixel(i, j, gRenderer);
 		}
 	}

@@ -3,10 +3,9 @@
 
 const int CLOCK_SPEED = 540;
 
-const int SCREEN_WIDTH = 640;
-const int SCREEN_HEIGHT = 320;
-
 namespace c8_display {
+	const int SCREEN_WIDTH = 640;
+	const int SCREEN_HEIGHT = 320;
 	const int INTERNAL_WIDTH = 64;
 	const int INTERNAL_HEIGHT = 32;
 }
