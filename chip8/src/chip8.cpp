@@ -1,14 +1,17 @@
 #include "chip8.hpp"
+#include "globals.hpp"
+
 
 #include <iostream>
 #include <chrono>
 #include <vector>
 #include <fstream>
-#include "globals.hpp"
+#include <SDL2/SDL_keycode.h>
 
 chip8::chip8() {
 	mem = new memoryc8();
 	gfx = new display();
+	gfxDebug = new displayDebugCPU();
 	proc = new cpu(mem, gfx);
 	in = new inputHandler();
 	cpuScheduler = new taskScheduler<cpuCycle, cpu*>(CLOCK_SPEED);
@@ -16,6 +19,7 @@ chip8::chip8() {
 
 chip8::~chip8() {
 	delete gfx;
+	delete gfxDebug;
 	delete proc;
 	delete mem;
 	delete in;
@@ -42,13 +46,18 @@ void chip8::gameloop() {
 			gfx->clear();
 			proc->clearScreen = false;
 		}
+		gfxDebug->doUpdate(proc);
 		
 		// INPUT
 		while (SDL_PollEvent(&e) != 0) {
-			if (e.type == SDL_QUIT) {
+			if (e.type == SDL_WINDOWEVENT && e.window.event == SDL_WINDOWEVENT_CLOSE) {
+				running = false;
+				break;
+			} else if (e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_ESCAPE) {
 				running = false;
 				break;
 			}
+
 			in->processInput(e, proc);
 		}
 

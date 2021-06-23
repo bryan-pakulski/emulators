@@ -254,6 +254,7 @@ void opcodes::op0NNN(cpu* proc) {
  */
 void opcodes::op00E0(cpu* proc) {
 	proc->clearScreen = true;
+	
 }
 
 /**
@@ -515,6 +516,10 @@ void opcodes::opDXYN(cpu* proc) {
 
 	proc->setV(0xF, 0);
 
+	// Normalized coordinates
+	unsigned short xPos = proc->getV(x) % c8_display::INTERNAL_WIDTH;
+	unsigned short yPos = proc->getV(y) % c8_display::INTERNAL_HEIGHT;
+
 	// Iterate over display
 	for (int row = 0; row < nRows; ++row) {
 		
@@ -523,10 +528,8 @@ void opcodes::opDXYN(cpu* proc) {
 		for (int col = 0; col < 8; ++col) {
 
 			if ((sprite & (0x80 >> col)) != 0) {
-				unsigned short index = (proc->getV(x) + col) + ((proc->getV(y) + row) * c8_display::INTERNAL_WIDTH);
-
-				// Normalize index to support wrapping
-				index %= c8_display::INTERNAL_WIDTH*c8_display::INTERNAL_HEIGHT;
+				unsigned short index = ((yPos + row) * c8_display::INTERNAL_WIDTH) + (xPos + col);
+				index %= (c8_display::INTERNAL_WIDTH * c8_display::INTERNAL_HEIGHT);
 				unsigned char gfxVal = proc->gfx->getPixel(index);
 				
 				if (gfxVal == 0xF) {
@@ -546,7 +549,12 @@ void opcodes::opDXYN(cpu* proc) {
  * Skips the next instruction if the key stored in VX is pressed
  */
 void opcodes::opEX9E(cpu* proc) {
-	
+	unsigned short x = (proc->getOP() & 0x0F00) >> 8;
+	unsigned short key = proc->getV(x);
+
+	if (proc->keyPressed(key)) {
+		proc->stepPC(1);
+	}
 }
 
 
@@ -555,7 +563,12 @@ void opcodes::opEX9E(cpu* proc) {
  * Skips the next instruction if the key stored in VX isn't pressed
  */
 void opcodes::opEXA1(cpu* proc) {
-	
+	unsigned short x = (proc->getOP() & 0x0F00) >> 8;
+	unsigned short key = proc->getV(x);
+
+	if (!proc->keyPressed(key)) {
+		proc->stepPC(1);
+	}
 }
 
 /**
@@ -571,7 +584,19 @@ void opcodes::opFX07(cpu* proc) {
  * A key press is awaited, and then stored in VX
  */
 void opcodes::opFX0A(cpu* proc) {
+	unsigned short x = (proc->getOP() & 0x0F00) >> 8;
 
+	bool keyPressed = false;
+
+	while (!keyPressed) {
+		for (int i = 0; i < 0xF; i++) {
+			if (proc->keyPressed(i)) {
+				proc->setV(x, i);
+				keyPressed = true;
+				break;
+			}
+		}
+	}
 }
 
 /**
@@ -591,7 +616,6 @@ void opcodes::opFX18(cpu* proc) {
 
 	proc->soundTimer = proc->getV(x);
 }
-
 
 
 /**
@@ -639,7 +663,7 @@ void opcodes::opFX33(cpu* proc) {
 void opcodes::opFX55(cpu* proc) {
 	unsigned short x = (proc->getOP() & 0x0F00) >> 8;
 
-	for (int i = 0; i < x; i++) {
+	for (int i = 0; i <= x; ++i) {
 		proc->mem->set( proc->getI() + i, proc->getV(i) );
 	}
 }
@@ -650,7 +674,7 @@ void opcodes::opFX55(cpu* proc) {
 void opcodes::opFX65(cpu* proc) {
 	unsigned short x = (proc->getOP() & 0x0F00) >> 8;
 
-	for (int i = 0; i < x; i++) {
+	for (int i = 0; i <= x; ++i) {
 		proc->setV( i, proc->mem->get(proc->getI() + i) );
 	}
 }

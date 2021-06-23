@@ -38,16 +38,12 @@ taskScheduler<TYPE, DTYPE>::taskScheduler(int clockSpeed) {
 template <class TYPE, class DTYPE> void
 taskScheduler<TYPE, DTYPE>::waitOnDT(std::chrono::milliseconds executionTime) {
 	
-	//TODO: clean up timing code
-
-	/*
 	if (executionTime.count() >= targetDT.count()) {
 		return;
 	} else {
 		td_milliseconds waitTime = td_milliseconds(targetDT.count() - executionTime.count());
 		std::this_thread::sleep_for(waitTime);
 	}
-	*/
 
 	return;
 }
@@ -63,9 +59,9 @@ taskScheduler<TYPE, DTYPE>::waitOnDT(std::chrono::milliseconds executionTime) {
 template <class TYPE, class DTYPE> double
 taskScheduler<TYPE, DTYPE>::executeCommand(TYPE func, DTYPE data) {
 
-	auto beg_t = std::chrono::system_clock::now();
+	auto beg_t = std::chrono::high_resolution_clock::now();
 	func(data);
-	auto end_t = std::chrono::system_clock::now();
+	auto end_t = std::chrono::high_resolution_clock::now();
 
 	std::chrono::milliseconds diff = std::chrono::duration_cast<std::chrono::milliseconds>(end_t - beg_t);
 	waitOnDT(diff);

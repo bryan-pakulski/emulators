@@ -3,6 +3,7 @@ bin/
 tests/
 lib/
 obj/
+dependencies/
 
 *.o
 .vscode

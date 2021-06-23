@@ -19,6 +19,27 @@ cpu::~cpu() {
 }
 
 /**
+ * Resets the keypad array to 0 
+*/
+void cpu::clearKeyPad() {
+	memset(keypad, 0, 0xF * sizeof(*keypad));
+}
+
+/**
+ * Sets a key at index to be pressed 
+*/
+void cpu::setKey(int index, unsigned char value) {
+	keypad[index] = value;
+}
+
+/**
+ * Checks if a key at index is pressed 
+*/
+bool cpu::keyPressed(int index) {
+	return (keypad[index] == 0x1);
+}
+
+/**
  * Getter and setter functions for member variables
 */
 unsigned short cpu::getI() {
@@ -91,11 +112,14 @@ unsigned short cpu::fetchNextOpcode() {
  * Call function mapping from opcode and update other logic i.e. timers
  */
 void cpu::cycle(cpu* proc) {
+
 	// Fetch opcode
 	proc->setOP(proc->fetchNextOpcode());
+
+	// Increment PC before execution
+	proc->stepPC(1);
 
 	// Decode opcode and execute
 	func_p opCallFunction = proc->op_lookup->get(proc->getOP());
 	opCallFunction(proc);
-	proc->stepPC(1);
 }

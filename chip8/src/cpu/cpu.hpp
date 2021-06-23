@@ -21,6 +21,7 @@ class cpu {
 		unsigned short op;							// Current opcode
 		unsigned short stack[16] { 0 };				// Stack implementation
 		unsigned short sp;							// Stack pointer
+		unsigned char keypad[16] { 0 };			// keypad input 0x0 -> 0xF, value is 1 if pressed
 
 	public:
 		cpu(memoryc8* m, display* g);
@@ -53,6 +54,10 @@ class cpu {
 		void pushStack( unsigned short value );
 
 		unsigned short fetchNextOpcode();			// Fetch next opcode from memory
+
+		void clearKeyPad();
+		void setKey(int index, unsigned char value);
+		bool keyPressed(int index);
 
 		static void cycle(cpu*);
 		

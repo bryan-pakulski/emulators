@@ -2,7 +2,6 @@
 #define __DISPLAY8_HPP__
 
 #include <SDL.h>
-#include <SDL2/SDL_ttf.h>
 
 #include "../globals.hpp"
 

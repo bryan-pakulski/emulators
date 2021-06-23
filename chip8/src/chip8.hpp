@@ -6,6 +6,7 @@
 #include "cpu/taskScheduler.hpp"
 #include "cpu/cpu.hpp"
 #include "display/display.hpp"
+#include "display/displayDebugCPU.hpp"
 #include "input/inputHandler.hpp"
 #include "memoryc8/memoryc8.hpp"
 
@@ -16,6 +17,7 @@ class chip8 {
 		memoryc8 *mem;
 		cpu *proc;
 		display *gfx;
+		displayDebugCPU *gfxDebug;
 		taskScheduler<cpuCycle, cpu*> *cpuScheduler;
 		inputHandler *in;
 		

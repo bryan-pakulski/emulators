@@ -5,7 +5,7 @@ Feel free to dig apart any source code and re-use in any other projects, just ma
 
 # Required tools for compiling/testing projects:
 
-- g++ (C++11 standard)
+- g++ (C++17 standard)
 - valgrind
 - patchelf
 

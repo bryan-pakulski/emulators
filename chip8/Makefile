@@ -12,10 +12,12 @@ OBJ := obj
 LIB := lib
 # Include folder for external libraries, check INCDEF to make sure subdirectories are included
 INC := include
+# Dependencies folder i.e. fonts, images, etc..
+DEP := dependencies
 
-############################
-### Include definitions  ###
-############################
+########################
+### Include headers  ###
+########################
 
 INCDEF := -I$(INC) -Iinclude/SDL2
 
@@ -37,7 +39,7 @@ TERMARGS := -c
 # Program name
 EXECUTABLE := main
 # Program arguments
-EXECUTABLE_ARGUMENTS := roms/UFO
+EXECUTABLE_ARGUMENTS := roms/test_opcode
 
 ####################
 ### Source files ###
@@ -77,6 +79,9 @@ $(EXECUTABLE): $(OBJECTS)
 		mv $(EXECUTABLE) $(BIN)/$(EXECUTABLE); \
 	fi
 
+	# Move dependencies
+	cp -r $(DEP)/* $(BIN)/
+
 # copy any libraries to the binary release and link via patchelf if required
 ifneq ("$(wildcard $(LIB))", "")
 	if [ ! -d $(BIN)/lib/ ]; then \
@@ -115,6 +120,11 @@ init:
 		mkdir $(INC); \
 	fi
 
+	# Create dependencies folder if it doesn't exist
+	if [ ! -d $(DEP) ]; then \
+		mkdir $(DEP); \
+	fi
+
 ###################
 ###  Run target  ##
 ###################
@@ -135,7 +145,7 @@ mem_check:
 ### Clean target ###
 ####################
 clean:
-	find $(BIN) -type f -name "$(EXECUTABLE)" -exec rm -f {} \;
 	find $(BIN)/lib -type f -name "*" -exec rm -f {} \;
+	find $(BIN) -type f -name "*" -exec rm -f {} \;
 	find $(SRC) -type f -name "*.o" -exec rm -f {} \;
 	find $(OBJ) -type f -name "*.o" -exec rm -f {} \;
