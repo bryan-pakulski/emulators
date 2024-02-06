@@ -7,3 +7,10 @@ dependencies/
 
 *.o
 .vscode
+*.tar.gz
+
+.cache/
+.cppcheck/
+build/
+.vs
+.vscode
