@@ -1,5 +1,26 @@
-#pragma once
+#ifndef __CHIP8_HPP__
+#define __CHIP8_HPP__
 
-// Chip 8 is capable of accessign up to 4kb of ram, from location 0x000 to 0xFFF
-// The first 512 bytes aare reserved and shouldn't be used by programs
-// Most programs should start at 0x200, programs starting at 0x600 are intended for the ETI 660
+#include <iostream>
+
+#include "cpu/taskScheduler.h"
+#include "cpu/cpu.h"
+#include "memoryc8/memoryc8.h"
+
+typedef void (*cpuCycle)(cpu *);
+
+class chip8 {
+private:
+  memoryc8 *mem;
+  cpu *proc;
+  taskScheduler<cpuCycle, cpu *> *cpuScheduler;
+
+public:
+  chip8();
+  ~chip8();
+
+  void gameloop();
+  bool loadRomIntoMemory(char *filepath);
+};
+
+#endif

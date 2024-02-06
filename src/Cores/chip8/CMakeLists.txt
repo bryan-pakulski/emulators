@@ -4,6 +4,10 @@ include_directories(
 
 ADD_LIBRARY( chip8-emu SHARED
         interface.cpp
+        chip8.cpp
+        memoryc8/memoryc8.cpp
+        cpu/cpu.cpp
+        cpu/opcodes.cpp
 )
 
 target_link_libraries(

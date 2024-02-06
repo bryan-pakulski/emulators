@@ -1,10 +1,15 @@
 #include <iostream>
 
+#include "chip8.h"
 #include "QLogger.h"
 
 extern "C" {
 bool core_init() {
   QLogger::GetInstance().Log(LOGLEVEL::INFO, "Initialising chip8 core");
+
+  // Initialise cpu and load rom
+  chip8 c8 = chip8();
+
   return true;
 }
 
